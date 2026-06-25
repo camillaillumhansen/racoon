@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Racoon Facility — KPI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --green:  #47D7AC; --green-d:rgba(71,215,172,0.12); --green-b:rgba(71,215,172,0.28);
+      --blue:   #6366f1; --blue-d:rgba(99,102,241,0.12);  --blue-b:rgba(99,102,241,0.3);
+      --red:    #ef4444; --red-d:rgba(239,68,68,0.12);
+      --gold:   #C9A84C; --gold-d:rgba(201,168,76,0.12);  --gold-b:rgba(201,168,76,0.28);
+      --bg:     #060608; --card:#0e0e12; --border:#1e1e28; --border2:#2a2a38;
+      --white:  #ffffff; --soft:rgba(255,255,255,0.6);
+      --font:   'Work Sans', system-ui, sans-serif;
+    }
+    html,body { height:100%; overflow:hidden; background:var(--bg); color:var(--white); font-family:var(--font); }
+
+    /* HEADER */
+    header { display:flex; justify-content:space-between; align-items:center; padding:0 28px; height:52px; border-bottom:1px solid var(--border); background:linear-gradient(90deg,#09090d,#0d0d14); }
+    .logo-img { height:26px; }
+    .hdr-right { display:flex; align-items:center; gap:20px; }
+    #clock { font-size:1.5rem; font-weight:300; letter-spacing:.04em; }
+    #date  { font-size:.7rem; color:var(--soft); text-align:right; text-transform:capitalize; }
+    .live-pill { display:flex; align-items:center; gap:6px; background:var(--green-d); border:1px solid var(--green-b); border-radius:999px; padding:4px 13px; font-size:.68rem; font-weight:800; color:var(--green); letter-spacing:.1em; }
+    .pulse { width:7px; height:7px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.25;transform:scale(.65)} }
+    #cbar-wrap { display:flex; align-items:center; gap:8px; }
+    .cbar-lbl { font-size:.65rem; color:var(--soft); }
+    #cbar { width:80px; height:3px; background:var(--border2); border-radius:2px; overflow:hidden; }
+    #cfill { height:100%; background:var(--green); transition:width 1s linear; }
+
+    /* MAIN — 3 rækker, sidste delt i venstre/højre */
+    main { height:calc(100vh - 52px); display:grid; grid-template-rows:36% 37% 27%; padding:12px 24px 10px; gap:10px; }
+
+    /* ZONE 1 */
+    .zone1 { display:grid; grid-template-columns:260px 1fr; gap:10px; }
+
+    .donut-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 18px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; position:relative; overflow:hidden; }
+    .donut-card::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(71,215,172,.07) 0%,transparent 70%); pointer-events:none; }
+    .donut-wrap { position:relative; width:175px; height:175px; }
+    .donut-wrap svg { transform:rotate(-90deg); }
+    .donut-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .donut-pct { font-size:2.6rem; font-weight:900; color:var(--white); line-height:1; }
+    .donut-sub { font-size:.6rem; font-weight:700; color:var(--soft); margin-top:3px; letter-spacing:.1em; text-transform:uppercase; }
+    .donut-legend { display:flex; flex-direction:column; gap:7px; width:100%; }
+    .leg-row { display:flex; justify-content:space-between; align-items:center; }
+    .leg-left { display:flex; align-items:center; gap:6px; font-size:.72rem; font-weight:600; color:var(--soft); }
+    .leg-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+    .leg-val { font-size:.78rem; font-weight:800; color:var(--white); }
+
+    .status-grid { display:grid; grid-template-columns:1fr 1fr 1fr; grid-template-rows:1fr 1fr; gap:10px; }
+    .stat-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px 16px; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden; }
+    .stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:14px 14px 0 0; }
+    .stat-card.s-green::before { background:linear-gradient(90deg,var(--green),rgba(71,215,172,.3)); }
+    .stat-card.s-blue::before  { background:linear-gradient(90deg,var(--blue),rgba(99,102,241,.3)); }
+    .stat-card.s-red::before   { background:linear-gradient(90deg,var(--red),rgba(239,68,68,.3)); }
+    .stat-card.s-gold::before  { background:linear-gradient(90deg,var(--gold),rgba(201,168,76,.3)); }
+    .stat-card.s-dim::before   { background:var(--border2); }
+    .sc-label { font-size:.62rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--soft); }
+    .sc-value { font-size:clamp(1.3rem,2.2vw,2rem); font-weight:900; color:var(--white); line-height:1; margin-top:4px; }
+    .sc-value.green{color:var(--green);} .sc-value.red{color:var(--red);} .sc-value.gold{color:var(--gold);}
+    .sc-desc { font-size:.65rem; font-weight:600; color:var(--soft); margin-top:3px; }
+    .sc-progress { height:4px; background:var(--border2); border-radius:2px; overflow:hidden; margin-top:7px; }
+    .sc-pfill { height:100%; border-radius:2px; transition:width 1.2s ease; }
+
+    /* ZONE 2 — 3 sælgere + chart */
+    .zone2 { display:grid; grid-template-columns:repeat(3,1fr) 1.3fr; gap:10px; }
+
+    .seller-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px; display:flex; flex-direction:column; gap:10px; position:relative; overflow:hidden; }
+    .seller-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:14px 14px 0 0; }
+    .seller-card.rank-1::before { background:linear-gradient(90deg,var(--green),#34d399); }
+    .seller-card.rank-2::before { background:linear-gradient(90deg,var(--gold),#fbbf24); }
+    .seller-card.rank-3::before { background:linear-gradient(90deg,#64748b,#94a3b8); }
+
+    .avatar-wrap { position:relative; width:110px; height:110px; flex-shrink:0; }
+    .avatar { width:110px; height:110px; border-radius:50%; object-fit:cover; position:absolute; top:0; left:0; }
+    .woop-rings { position:absolute; top:-10px; left:-10px; width:130px; height:130px; transform:rotate(-90deg); }
+
+    .seller-top { display:flex; align-items:center; gap:12px; }
+    .seller-name { font-size:1.05rem; font-weight:800; color:var(--white); }
+    .seller-role { font-size:.6rem; font-weight:600; color:var(--soft); text-transform:uppercase; letter-spacing:.07em; margin-top:1px; }
+    .woop-badges { display:flex; gap:5px; flex-wrap:wrap; margin-top:5px; }
+    .woop-badge { display:flex; align-items:center; gap:3px; padding:2px 7px; border-radius:999px; font-size:.65rem; font-weight:800; }
+    .wb-rest  { background:rgba(71,215,172,.12); color:var(--green); border:1px solid rgba(71,215,172,.25); }
+    .wb-sleep { background:rgba(99,102,241,.12); color:#818cf8; border:1px solid rgba(99,102,241,.25); }
+    .wb-energy{ background:rgba(201,168,76,.12); color:var(--gold); border:1px solid rgba(201,168,76,.25); }
+
+    .seller-stats { display:flex; flex-direction:column; gap:5px; flex:1; }
+    .s-stat { display:flex; justify-content:space-between; align-items:center; padding:7px 10px; background:rgba(255,255,255,.035); border:1px solid var(--border); border-radius:8px; }
+    .s-lbl { font-size:.64rem; font-weight:700; color:var(--soft); text-transform:uppercase; letter-spacing:.06em; }
+    .s-val { font-size:.92rem; font-weight:800; }
+    .s-val.green{color:var(--green);} .s-val.gold{color:var(--gold);}
+
+    .chart-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; display:flex; flex-direction:column; gap:10px; }
+    .chart-title { font-size:.65rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--soft); }
+    .bar-chart { display:flex; flex-direction:column; gap:8px; flex:1; justify-content:center; }
+    .bar-row { display:flex; align-items:center; gap:8px; }
+    .bar-name { font-size:.72rem; font-weight:700; color:var(--white); width:68px; flex-shrink:0; }
+    .bar-track { flex:1; height:24px; background:var(--border); border-radius:4px; overflow:hidden; }
+    .bar-fill { height:100%; border-radius:4px; display:flex; align-items:center; padding-left:8px; font-size:.68rem; font-weight:800; color:#060608; transition:width 1.2s ease; white-space:nowrap; }
+    .b-green{background:linear-gradient(90deg,var(--green),#34d399);}
+    .b-gold {background:linear-gradient(90deg,var(--gold),#fbbf24);}
+    .b-dim  {background:linear-gradient(90deg,#64748b,#94a3b8);}
+
+    /* ZONE 3 — venstre: billetter + goal, højre: succes */
+    .zone3 { display:grid; grid-template-columns:1fr 1fr 1fr 1.3fr 1.3fr; gap:10px; }
+
+    .ticket-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:13px 16px; display:flex; flex-direction:column; gap:7px; position:relative; overflow:hidden; }
+    .ticket-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),#fbbf24); border-radius:14px 14px 0 0; }
+    .ticket-card::after  { content:'🎫'; position:absolute; right:12px; top:10px; font-size:1.3rem; opacity:.2; }
+    .ticket-eyebrow { font-size:.6rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); }
+    .ticket-name    { font-size:.88rem; font-weight:800; color:var(--white); line-height:1.2; }
+    .ticket-valrow  { display:flex; align-items:baseline; gap:6px; }
+    .ticket-num     { font-size:2rem; font-weight:900; color:var(--white); line-height:1; }
+    .ticket-of      { font-size:.82rem; font-weight:600; color:var(--soft); }
+    .ticket-bar     { height:7px; background:var(--border2); border-radius:4px; overflow:hidden; }
+    .ticket-fill    { height:100%; border-radius:4px; background:linear-gradient(90deg,var(--gold),var(--green)); transition:width 1s; }
+    .ticket-pct     { font-size:.7rem; font-weight:800; color:var(--gold); }
+
+    .goal-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; display:flex; flex-direction:column; gap:0; position:relative; overflow:hidden; }
+    .goal-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--blue),var(--green)); border-radius:14px 14px 0 0; }
+    .goal-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+    .goal-label { font-size:.62rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--soft); }
+    .goal-title { font-size:.95rem; font-weight:900; color:var(--white); margin-top:2px; }
+    .goal-badge { font-size:.75rem; font-weight:900; padding:3px 9px; background:var(--green-d); border:1px solid var(--green-b); border-radius:999px; color:var(--green); white-space:nowrap; }
+    .goal-bars { display:flex; flex-direction:column; gap:7px; margin-top:0; }
+    .gbr { display:flex; flex-direction:column; gap:3px; }
+    .gbr-hdr { display:flex; justify-content:space-between; }
+    .gbr-name { font-size:.7rem; font-weight:700; color:var(--white); }
+    .gbr-val  { font-size:.7rem; font-weight:800; color:var(--soft); }
+    .gbr-track { height:8px; background:var(--border2); border-radius:4px; overflow:hidden; }
+    .gbr-fill { height:100%; border-radius:4px; transition:width 1.2s ease; }
+    .gf-green{background:linear-gradient(90deg,var(--green),#34d399);}
+    .gf-gold {background:linear-gradient(90deg,var(--gold),#fbbf24);}
+    .gf-dim  {background:linear-gradient(90deg,#64748b,#94a3b8);}
+
+    /* ── SUCCES-KORT ── */
+    .succes-card {
+      background:var(--card);
+      border:1px solid var(--gold-b);
+      border-radius:14px;
+      padding:14px 16px;
+      display:flex; flex-direction:column; gap:10px;
+      position:relative; overflow:hidden;
+      box-shadow:0 0 30px rgba(201,168,76,.08);
+    }
+    .succes-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),#fbbf24,var(--gold)); border-radius:14px 14px 0 0; }
+
+    .succes-header { display:flex; align-items:center; gap:8px; }
+    .succes-trophy { font-size:1.3rem; }
+    .succes-eyebrow { font-size:.62rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); }
+
+    .succes-body { display:flex; align-items:flex-start; gap:12px; flex:1; }
+    .succes-avatar-wrap { flex-shrink:0; position:relative; }
+    .succes-avatar { width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid var(--gold); box-shadow:0 0 14px rgba(201,168,76,.3); }
+    .succes-name-big { font-size:1.3rem; font-weight:900; color:var(--gold); line-height:1; }
+    .succes-prize { font-size:.7rem; font-weight:700; color:var(--soft); margin-top:2px; }
+
+    /* Talebobbel */
+    .bubble-wrap { flex:1; position:relative; }
+    .bubble {
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px 14px 14px 4px;
+      padding:10px 12px;
+      font-size:.8rem;
+      font-weight:600;
+      color:var(--white);
+      line-height:1.5;
+      position:relative;
+    }
+    .bubble::before {
+      content:'';
+      position:absolute; bottom:-8px; left:16px;
+      width:0; height:0;
+      border-left:8px solid transparent;
+      border-right:8px solid transparent;
+      border-top:8px solid rgba(255,255,255,.06);
+    }
+
+    .succes-dots { display:flex; justify-content:center; gap:6px; }
+    .succes-dot { width:6px; height:6px; border-radius:50%; background:var(--border2); transition:background .3s; cursor:pointer; }
+    .succes-dot.active { background:var(--gold); }
+
+    /* Fade animation */
+    @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    .succes-body { animation:fadeIn .5s ease; }
+
+    .spin-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px 14px; display:flex; flex-direction:column; gap:6px; position:relative; overflow:hidden; }
+    .spin-card::before { content:""; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--blue),#a855f7); border-radius:14px 14px 0 0; }
+    .spin-eyebrow { font-size:.6rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--blue); }
+    .spin-steps { display:flex; flex-direction:column; gap:4px; flex:1; justify-content:center; }
+    .spin-step { display:flex; align-items:center; gap:8px; padding:5px 8px; border-radius:8px; }
+    .spin-step.s { background:rgba(99,102,241,.1); border:1px solid rgba(99,102,241,.2); }
+    .spin-step.p { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.18); }
+    .spin-step.i { background:rgba(201,168,76,.08); border:1px solid rgba(201,168,76,.18); }
+    .spin-step.n { background:rgba(71,215,172,.08); border:1px solid rgba(71,215,172,.2); }
+    .spin-letter { font-size:.85rem; font-weight:900; width:18px; flex-shrink:0; }
+    .spin-step.s .spin-letter { color:var(--blue); }
+    .spin-step.p .spin-letter { color:var(--red); }
+    .spin-step.i .spin-letter { color:var(--gold); }
+    .spin-step.n .spin-letter { color:var(--green); }
+    .spin-word { font-size:.75rem; font-weight:800; color:var(--white); }
+    .spin-desc { font-size:.62rem; color:var(--soft); }
+    #err { display:none; background:rgba(239,68,68,.1); border:1px solid var(--red); color:var(--red); padding:8px; border-radius:8px; font-size:.8rem; text-align:center; }
+  </style>
+</head>
+<body>
+<script src="avatars.js"></script>
+
+<header>
+  <img class="logo-img" id="logo-img" alt="Racoon Facility"/>
+  <div class="hdr-right">
+    <div id="cbar-wrap"><span class="cbar-lbl">opdaterer om</span><div id="cbar"><div id="cfill" style="width:100%"></div></div></div>
+    <div class="live-pill"><div class="pulse"></div>LIVE</div>
+    <div><div id="clock">--:--:--</div><div id="date">–</div></div>
+  </div>
+</header>
+
+<main>
+  <div id="err"></div>
+
+  <div class="zone1">
+    <div class="donut-card">
+      <div class="donut-wrap">
+        <svg width="175" height="175" viewBox="0 0 175 175">
+          <circle cx="87.5" cy="87.5" r="68" fill="none" stroke="#1a1a24" stroke-width="18"/>
+          <circle id="darc" cx="87.5" cy="87.5" r="68" fill="none" stroke="url(#dg)" stroke-width="18" stroke-linecap="round"
+                  stroke-dasharray="427.3" stroke-dashoffset="427.3"
+                  style="transition:stroke-dashoffset 1.5s ease;filter:drop-shadow(0 0 8px rgba(71,215,172,.35))"/>
+          <defs><linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#47D7AC"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs>
+        </svg>
+        <div class="donut-center"><div class="donut-pct" id="dpct">–</div><div class="donut-sub">af mål 2026</div></div>
+      </div>
+      <div class="donut-legend">
+        <div class="leg-row"><span class="leg-left"><span class="leg-dot" style="background:var(--green)"></span>Status ÅTD</span><span class="leg-val" id="ls">–</span></div>
+        <div class="leg-row"><span class="leg-left"><span class="leg-dot" style="background:#444"></span>To Go</span><span class="leg-val" id="lt">–</span></div>
+        <div class="leg-row"><span class="leg-left"><span class="leg-dot" style="background:var(--blue)"></span>Mål 2026</span><span class="leg-val" id="lm">–</span></div>
+      </div>
+    </div>
+    <div class="status-grid" id="status-grid"></div>
+  </div>
+
+  <div class="zone2" id="zone2"></div>
+  <div class="zone3" id="zone3"></div>
+</main>
+
+<script>
+document.getElementById('logo-img').src = LOGO;
+const REFRESH = 30000;
+
+// ── SUCCES-HISTORIER — opdater her når I har en ny vinder ──
+const SUCCES = [
+  {
+    name: 'Oscar',
+    img: () => AVATARS.oscar,
+    prize: '🏆 Sølvkort til Tivoli — Juni 2025',
+    text: 'Sparkede døren ind på Skydebanegade og scorede en helt ny Dahl i Rødovre-kunde. Klassisk Oscar-stil!'
+  },
+  {
+    name: 'Andreas',
+    img: () => AVATARS.andreas,
+    prize: '🎟️ VIP-billetter — Maj 2025',
+    text: 'Lukkede årets største enkeltaftale på under 48 timer. Kunden ringede selv og bad om at skrive under!'
+  },
+  {
+    name: 'Michael',
+    img: () => AVATARS.michael,
+    prize: '🥇 Guldstjerne — Marts 2025',
+    text: 'Solgte 3 store tilbud i sine første 2 måneder. Ny på holdet — men ingen ville vide det. Imponerende start!'
+  },
+  {
+    name: 'Kristtina',
+    img: () => AVATARS.kristtina,
+    prize: '💛 Teamets hjerte — Februar 2025',
+    text: 'Altid empatisk, altid klar med det rigtige tilbud på det rigtige tidspunkt. Holder teamet samlet og kunderne glade.'
+  },
+  {
+    name: 'Camilla',
+    img: () => AVATARS.camilla,
+    prize: '🍾 Champagne + weekend — April 2025',
+    text: 'Holdt styr på hele teamet, Excel-arket OG kaffen — og fik alligevel tid til at lave den bedste kundepræsentation i år.'
+  },
+];
+
+let succesIdx = 0;
+let succesTimer = null;
+
+function renderSucces() {
+  const s = SUCCES[succesIdx];
+  document.getElementById('succes-name').textContent = s.name;
+  document.getElementById('succes-prize').textContent = s.prize;
+  document.getElementById('succes-text').textContent = s.text;
+  document.getElementById('succes-avatar').src = s.img();
+  document.querySelectorAll('.succes-dot').forEach((d,i) => d.classList.toggle('active', i===succesIdx));
+  // re-trigger animation
+  const body = document.getElementById('succes-body');
+  body.style.animation = 'none';
+  body.offsetHeight;
+  body.style.animation = '';
+}
+
+function nextSucces() {
+  succesIdx = (succesIdx + 1) % SUCCES.length;
+  renderSucces();
+}
+
+function startSuccesTimer() {
+  if (succesTimer) clearInterval(succesTimer);
+  succesTimer = setInterval(nextSucces, 8000);
+}
+
+const BIG = [
+  {label:'Status',        cls:'s-green', vcls:'green', prog:true},
+  {label:'Mål 2026',      cls:'s-blue',  vcls:'',      prog:false},
+  {label:'To Go',         cls:'s-red',   vcls:'red',   prog:false},
+  {label:'Indeks',        cls:'s-gold',  vcls:'gold',  prog:false},
+  {label:'Resultat 2025', cls:'s-dim',   vcls:'',      prog:false},
+];
+
+const SELLERS = {
+  Andreas: { img:()=>AVATARS.andreas, role:'Account Manager', ytd:'Andreas - ÅTD', rest:'Woop Restitution Andreas', sleep:'Woop Søvn Andreas', energy:'Woop Energi Andreas' },
+  Oscar:   { img:()=>AVATARS.oscar,   role:'Account Manager', ytd:'Oscar - ÅTD',   bes:'Besigtigelser Oscar',  rest:'Woop Restitution Oscar',   sleep:'Woop Søvn Oscar',   energy:'Woop Energi Oscar' },
+  Michael: { img:()=>AVATARS.michael, role:'Account Manager', ytd:'Michael - ÅTD', bes:'Besigtigelser Michael', rest:'Woop Restitution Michael', sleep:'Woop Søvn Michael', energy:'Woop Energi Michael' },
+};
+const TICKETS=['Mick Øgendahl','Anders Lund Madsen'], TTOTAL=60;
+
+function fmt(v,u){ const n=parseFloat(v); if(isNaN(n)) return v; if(u==='DKK'){if(n>=1e6)return(n/1e6).toLocaleString('da-DK',{maximumFractionDigits:2})+' M';if(n>=1e3)return(n/1e3).toLocaleString('da-DK',{maximumFractionDigits:1})+' K';}if(u==='%')return n.toLocaleString('da-DK',{maximumFractionDigits:0});return n.toLocaleString('da-DK',{maximumFractionDigits:0}); }
+function kv(kpis,l){ const k=kpis.find(x=>x.label===l); return k?parseFloat(k.value):0; }
+function woopColor(v){ return v>=80?'#47D7AC':v>=60?'#C9A84C':'#ef4444'; }
+function ring(cx,cy,r,pct,color,sw){ const c=2*Math.PI*r,off=c-(pct/100)*c; return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"/>`; }
+
+function renderDonut(kpis){
+  const s=kv(kpis,'Status'),m=kv(kpis,'Mål 2026'),t=kv(kpis,'To Go');
+  const pct=Math.min(100,(s/m)*100),c=2*Math.PI*68;
+  document.getElementById('darc').style.strokeDashoffset=c-(pct/100)*c;
+  document.getElementById('dpct').textContent=pct.toLocaleString('da-DK',{maximumFractionDigits:1})+'%';
+  document.getElementById('ls').textContent=fmt(s,'DKK')+' kr';
+  document.getElementById('lt').textContent=fmt(t,'DKK')+' kr';
+  document.getElementById('lm').textContent=fmt(m,'DKK')+' kr';
+}
+
+function renderStatus(kpis){
+  const maal=kv(kpis,'Mål 2026');
+  document.getElementById('status-grid').innerHTML=BIG.map(cfg=>{
+    const k=kpis.find(x=>x.label===cfg.label)||{value:0,unit:'',description:''};
+    const val=cfg.label==='Indeks'?fmt(k.value,'%')+'%':k.unit==='DKK'?fmt(k.value,'DKK')+' kr':fmt(k.value,k.unit);
+    const pct=cfg.prog?Math.min(100,(parseFloat(k.value)/maal)*100):0;
+    return `<div class="stat-card ${cfg.cls}">
+      <div><div class="sc-label">${cfg.label}</div><div class="sc-value ${cfg.vcls}">${val}</div><div class="sc-desc">${k.description}</div></div>
+      ${cfg.prog?`<div class="sc-progress"><div class="sc-pfill" style="width:${pct}%;background:var(--green)"></div></div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function renderZone2(kpis){
+  const ytds=[['Andreas',kv(kpis,'Andreas - ÅTD')],['Oscar',kv(kpis,'Oscar - ÅTD')],['Michael',kv(kpis,'Michael - ÅTD')]];
+  ytds.sort((a,b)=>b[1]-a[1]);
+  const rankMap={}; ytds.forEach(([n],i)=>rankMap[n]=i+1);
+  const maxYTD=ytds[0][1]||1;
+  const rCls=['rank-1','rank-2','rank-3'];
+  const barCls=['b-green','b-gold','b-dim'];
+
+  let html=Object.entries(SELLERS).map(([name,s])=>{
+    const rank=rankMap[name],cls=rCls[rank-1];
+    const ytd=kv(kpis,s.ytd),bes=s.bes?kv(kpis,s.bes):null;
+    const rest=kv(kpis,s.rest),sleep=kv(kpis,s.sleep),energy=kv(kpis,s.energy);
+    const rings=`<svg class="woop-rings" viewBox="0 0 130 130">${ring(65,65,60,rest,woopColor(rest),4)}${ring(65,65,51,sleep,'#818cf8',4)}${ring(65,65,42,energy,woopColor(energy),4)}</svg>`;
+    let stats=`<div class="s-stat"><span class="s-lbl">ÅTD</span><span class="s-val green">${fmt(ytd,'DKK')} kr</span></div>`;
+    if(bes!==null) stats+=`<div class="s-stat"><span class="s-lbl">Besigtigelser</span><span class="s-val gold">${bes}</span></div>`;
+    return `<div class="seller-card ${cls}">
+      <div class="seller-top">
+        <div class="avatar-wrap"><img class="avatar" src="${s.img()}" alt="${name}"/>${rings}</div>
+        <div><div class="seller-name">${name}</div><div class="seller-role">${s.role}</div>
+        <div class="woop-badges"><span class="woop-badge wb-rest">💚 ${rest}%</span><span class="woop-badge wb-sleep">😴 ${sleep}%</span><span class="woop-badge wb-energy">⚡ ${energy}%</span></div></div>
+      </div>
+      <div class="seller-stats">${stats}</div>
+    </div>`;
+  }).join('');
+
+  html+=`<div class="chart-card"><div class="chart-title">ÅTD omsætning</div><div class="bar-chart">${ytds.map(([n,v],i)=>`
+    <div class="bar-row"><div class="bar-name">${n}</div><div class="bar-track"><div class="bar-fill ${barCls[i]}" style="width:${Math.max(8,(v/maxYTD)*100)}%">${fmt(v,'DKK')} kr</div></div></div>`).join('')}</div></div>`;
+
+  document.getElementById('zone2').innerHTML=html;
+}
+
+function renderZone3(kpis){
+  const maal=kv(kpis,'Mål 2026');
+  let html=TICKETS.map(t=>{
+    const k=kpis.find(x=>x.label===t); if(!k) return '';
+    const v=parseFloat(k.value),pct=Math.min(100,(v/TTOTAL)*100);
+    return `<div class="ticket-card">
+      <div class="ticket-eyebrow">Dahl i Rødovre</div>
+      <div class="ticket-name">${t}</div>
+      <div class="ticket-valrow"><span class="ticket-num">${v}</span><span class="ticket-of">/ ${TTOTAL}</span></div>
+      <div class="ticket-bar"><div class="ticket-fill" style="width:${pct}%"></div></div>
+      <div class="ticket-pct">${pct.toFixed(0)}% afsat</div>
+    </div>`;
+  }).join('');
+
+  const sellers=[{n:'Andreas',k:'Andreas - ÅTD',c:'gf-green'},{n:'Oscar',k:'Oscar - ÅTD',c:'gf-gold'},{n:'Michael',k:'Michael - ÅTD',c:'gf-dim'}];
+  const totalS=kv(kpis,'Status'),totalP=Math.min(100,(totalS/maal)*100);
+  html+=`<div class="goal-card">
+    <div class="goal-top"><div><div class="goal-label">Fremgang mod mål 2026</div><div class="goal-title">Omsætning pr. sælger</div></div><div class="goal-badge">${totalP.toFixed(1)}% samlet</div></div>
+    <div class="goal-bars">${sellers.map(s=>{const v=kv(kpis,s.k),p=Math.min(100,(v/maal)*100);return`<div class="gbr"><div class="gbr-hdr"><span class="gbr-name">${s.n}</span><span class="gbr-val">${fmt(v,'DKK')} kr</span></div><div class="gbr-track"><div class="gbr-fill ${s.c}" style="width:${Math.max(2,p)}%"></div></div></div>`;}).join('')}</div>
+  </div>`;
+
+  // Succes-kort
+  const dots = SUCCES.map((_,i)=>`<div class="succes-dot${i===0?' active':''}" onclick="succesIdx=${i};renderSucces();startSuccesTimer()"></div>`).join('');
+  html+=`<div class="succes-card">
+    <div class="succes-header"><span class="succes-trophy">🏆</span><span class="succes-eyebrow">Månedens succes</span></div>
+    <div class="succes-body" id="succes-body">
+      <div class="succes-avatar-wrap"><img class="succes-avatar" id="succes-avatar" src="" alt=""/></div>
+      <div style="flex:1">
+        <div class="succes-name-big" id="succes-name">–</div>
+        <div class="succes-prize" id="succes-prize">–</div>
+        <div style="margin-top:8px">
+          <div class="bubble"><span id="succes-text">–</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="succes-dots">${dots}</div>
+  </div>`;
+
+  const spinSteps = [
+    {cls:'s',letter:'S',word:'Situation',desc:'Forstå kundens nuværende situation'},
+    {cls:'p',letter:'P',word:'Problem',desc:'Identificér smerten — hvad fungerer ikke?'},
+    {cls:'i',letter:'I',word:'Implication',desc:'Hvad koster det dem at IKKE løse det?'},
+    {cls:'n',letter:'N',word:'Need-payoff',desc:'Lad kunden selv sige hvad løsningen er værd'},
+  ];
+  html+=`<div class="spin-card">
+    <div class="spin-eyebrow">SPIN Selling</div>
+    <div class="spin-steps">${spinSteps.map(s=>`<div class="spin-step ${s.cls}"><span class="spin-letter">${s.letter}</span><div><div class="spin-word">${s.word}</div><div class="spin-desc">${s.desc}</div></div></div>`).join('')}</div>
+  </div>`;
+  document.getElementById('zone3').innerHTML=html;
+  renderSucces();
+  startSuccesTimer();
+}
+
+async function fetchKPIs(){
+  try{
+    const r=await fetch('/api/kpi'); if(!r.ok) throw new Error('HTTP '+r.status);
+    const d=await r.json(); if(d.error) throw new Error(d.error);
+    renderDonut(d.kpis); renderStatus(d.kpis); renderZone2(d.kpis); renderZone3(d.kpis);
+    document.getElementById('err').style.display='none';
+  }catch(e){
+    document.getElementById('err').style.display='block';
+    document.getElementById('err').textContent='⚠️ Fejl: '+e.message;
+  }
+}
+
+function clock(){ const n=new Date(); document.getElementById('clock').textContent=n.toLocaleTimeString('da-DK'); document.getElementById('date').textContent=n.toLocaleDateString('da-DK',{weekday:'long',day:'numeric',month:'long'}); }
+let t0=Date.now();
+fetchKPIs(); clock();
+setInterval(clock,1000);
+setInterval(()=>{ document.getElementById('cfill').style.width=Math.max(0,100-((Date.now()-t0)/REFRESH)*100)+'%'; },500);
+setInterval(()=>{ fetchKPIs(); t0=Date.now(); },REFRESH);
+</script>
+</body>
+</html>
