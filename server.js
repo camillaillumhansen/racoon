@@ -1,34 +1,42 @@
 const express = require('express');
-const xlsx = require('xlsx');
 const path = require('path');
-const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DATA_FILE = path.join(__dirname, 'data.xlsx');
 
-// Servér alle filer i mappen (index.html, avatars.js osv.)
-app.use(express.static(__dirname));
+// Google Sheets ID
+const SHEET_ID = '1KFQDifeF2p6zLVnhsUIaSpCD9SgZKD8dDpY-lidGO04';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Sheet1`;
 
-function readKPIs() {
-  if (!fs.existsSync(DATA_FILE)) {
-    throw new Error(`data.xlsx ikke fundet i: ${DATA_FILE}`);
-  }
-  const workbook = xlsx.readFile(DATA_FILE);
-  const sheet = workbook.Sheets[workbook.SheetNames[0]];
-  const rows = xlsx.utils.sheet_to_json(sheet);
-  return rows.map(row => ({
-    label:       String(row.label       ?? ''),
-    value:       row.value              ?? 0,
-    unit:        String(row.unit        ?? ''),
-    trend:       String(row.trend       ?? ''),
-    description: String(row.description ?? ''),
-  }));
+async function readKPIs() {
+  const response = await fetch(SHEET_URL);
+  if (!response.ok) throw new Error('Kunne ikke hente Google Sheets data');
+  const text = await response.text();
+  
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+  
+  return lines.slice(1).map(line => {
+    const values = line.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
+    const row = {};
+    headers.forEach((h, i) => {
+      row[h] = (values[i] || '').replace(/"/g, '').trim();
+    });
+    return {
+      label:       row.label       || '',
+      value:       parseFloat(row.value) || 0,
+      unit:        row.unit        || '',
+      trend:       row.trend       || '',
+      description: row.description || '',
+    };
+  }).filter(r => r.label);
 }
 
-app.get('/api/kpi', (req, res) => {
+app.use(express.static(__dirname));
+
+app.get('/api/kpi', async (req, res) => {
   try {
-    const kpis = readKPIs();
+    const kpis = await readKPIs();
     res.json({ kpis, updatedAt: new Date().toISOString() });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -37,5 +45,5 @@ app.get('/api/kpi', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`✅ Infoskærm kører på http://localhost:${PORT}`);
-  console.log(`📊 Læser KPI-data fra: ${DATA_FILE}`);
+  console.log(`📊 Henter KPI-data fra Google Sheets`);
 });
