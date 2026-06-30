@@ -33,7 +33,7 @@
     #cfill { height:100%; background:var(--green); transition:width 1s linear; }
 
     /* MAIN — 3 rækker, sidste delt i venstre/højre */
-    main { height:calc(100vh - 52px); display:grid; grid-template-rows:36% 37% 27%; padding:12px 24px 10px; gap:10px; }
+    main { height:calc(100vh - 52px); display:grid; grid-template-rows:30% 32% 19% 19%; padding:10px 24px 8px; gap:8px; }
 
     /* ZONE 1 */
     .zone1 { display:grid; grid-template-columns:260px 1fr; gap:10px; }
@@ -205,6 +205,26 @@
     .spin-step.n .spin-letter { color:var(--green); }
     .spin-word { font-size:.75rem; font-weight:800; color:var(--white); }
     .spin-desc { font-size:.62rem; color:var(--soft); }
+    /* ZONE 4 — UGEMÅL */
+    .zone4 { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .weekly-card {
+      background:var(--card); border:1px solid var(--border); border-radius:14px;
+      padding:10px 14px; display:flex; flex-direction:column; gap:6px;
+      position:relative; overflow:hidden;
+    }
+    .weekly-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--blue),var(--green)); border-radius:14px 14px 0 0; }
+    .weekly-header { display:flex; align-items:center; gap:8px; }
+    .weekly-avatar { width:26px; height:26px; border-radius:50%; object-fit:cover; }
+    .weekly-name { font-size:.78rem; font-weight:800; color:var(--white); }
+    .weekly-sub { font-size:.58rem; font-weight:700; color:var(--soft); text-transform:uppercase; letter-spacing:.08em; }
+    .weekly-goals { display:flex; flex-direction:column; gap:4px; flex:1; justify-content:center; }
+    .wg-row { display:flex; justify-content:space-between; align-items:center; padding:4px 8px; background:rgba(255,255,255,.03); border-radius:6px; }
+    .wg-label { font-size:.64rem; font-weight:700; color:var(--white); }
+    .wg-goal  { font-size:.7rem; font-weight:800; color:var(--blue); }
+    .wg-last  { font-size:.58rem; font-weight:600; color:var(--soft); margin-left:4px; }
+    .wg-last.hit { color:var(--green); }
+    .wg-last.miss { color:var(--red); }
+
     #err { display:none; background:rgba(239,68,68,.1); border:1px solid var(--red); color:var(--red); padding:8px; border-radius:8px; font-size:.8rem; text-align:center; }
   </style>
 </head>
@@ -246,6 +266,7 @@
 
   <div class="zone2" id="zone2"></div>
   <div class="zone3" id="zone3"></div>
+  <div class="zone4" id="zone4"></div>
 </main>
 
 <script>
@@ -440,11 +461,44 @@ function renderZone3(kpis){
   startSuccesTimer();
 }
 
+function renderZone4(kpis){
+  const sellers = [
+    {name:'Andreas', img:()=>AVATARS.andreas},
+    {name:'Oscar',   img:()=>AVATARS.oscar},
+    {name:'Michael', img:()=>AVATARS.michael},
+  ];
+  const goalTypes = [
+    {key:'Kanvas møder',   label:'Kanvas møder'},
+    {key:'Dahl Leads',     label:'Dahl i Rødovre leads'},
+    {key:'Besigtigelser',  label:'Besigtigelser'},
+    {key:'Telefon Kanvas', label:'Telefon kanvas'},
+  ];
+
+  document.getElementById('zone4').innerHTML = sellers.map(s=>{
+    const rows = goalTypes.map(g=>{
+      const goal = kv(kpis, `${s.name} ${g.key} Mål`);
+      const last = kv(kpis, `${s.name} ${g.key} Sidste`);
+      const hitCls = last >= goal ? 'hit' : 'miss';
+      return `<div class="wg-row">
+        <span class="wg-label">${g.label}</span>
+        <span><span class="wg-goal">${goal}</span><span class="wg-last ${hitCls}"> (sidste: ${last}/${goal})</span></span>
+      </div>`;
+    }).join('');
+    return `<div class="weekly-card">
+      <div class="weekly-header">
+        <img class="weekly-avatar" src="${s.img()}" alt="${s.name}"/>
+        <div><div class="weekly-name">${s.name}</div><div class="weekly-sub">Ugens mål</div></div>
+      </div>
+      <div class="weekly-goals">${rows}</div>
+    </div>`;
+  }).join('');
+}
+
 async function fetchKPIs(){
   try{
     const r=await fetch('/api/kpi'); if(!r.ok) throw new Error('HTTP '+r.status);
     const d=await r.json(); if(d.error) throw new Error(d.error);
-    renderDonut(d.kpis); renderStatus(d.kpis); renderZone2(d.kpis); renderZone3(d.kpis);
+    renderDonut(d.kpis); renderStatus(d.kpis); renderZone2(d.kpis); renderZone3(d.kpis); renderZone4(d.kpis);
     document.getElementById('err').style.display='none';
   }catch(e){
     document.getElementById('err').style.display='block';
