@@ -206,7 +206,7 @@
     .spin-word { font-size:.75rem; font-weight:800; color:var(--white); }
     .spin-desc { font-size:.62rem; color:var(--soft); }
     /* ZONE 4 — UGEMÅL */
-    .zone4 { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .zone4 { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
     .weekly-card {
       background:var(--card); border:1px solid var(--border); border-radius:14px;
       padding:10px 14px; display:flex; flex-direction:column; gap:6px;
@@ -445,7 +445,6 @@ function renderZone3(kpis){
 
 function renderZone4(kpis){
   const sellers = [
-    {name:'Andreas', img:()=>AVATARS.andreas},
     {name:'Oscar',   img:()=>AVATARS.oscar},
     {name:'Michael', img:()=>AVATARS.michael},
   ];
