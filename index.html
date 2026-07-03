@@ -33,7 +33,7 @@
     #cfill { height:100%; background:var(--green); transition:width 1s linear; }
 
     /* MAIN — 3 rækker, sidste delt i venstre/højre */
-    main { height:calc(100vh - 52px); display:grid; grid-template-rows:30% 32% 19% 19%; padding:10px 24px 8px; gap:8px; }
+    main { height:calc(100vh - 52px); display:grid; grid-template-rows:28% 30% 20% 22%; padding:12px 24px 10px; gap:10px; }
 
     /* ZONE 1 */
     .zone1 { display:grid; grid-template-columns:260px 1fr; gap:10px; }
@@ -205,25 +205,24 @@
     .spin-step.n .spin-letter { color:var(--green); }
     .spin-word { font-size:.75rem; font-weight:800; color:var(--white); }
     .spin-desc { font-size:.62rem; color:var(--soft); }
-    /* ZONE 4 — UGEMÅL */
-    .zone4 { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
-    .weekly-card {
-      background:var(--card); border:1px solid var(--border); border-radius:14px;
-      padding:10px 14px; display:flex; flex-direction:column; gap:6px;
-      position:relative; overflow:hidden;
-    }
+
+    /* ZONE 4 — UGEOVERSIGT */
+    .zone4 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .weekly-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:10px 14px; display:flex; flex-direction:column; gap:6px; position:relative; overflow:hidden; }
     .weekly-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--blue),var(--green)); border-radius:14px 14px 0 0; }
-    .weekly-header { display:flex; align-items:center; gap:8px; }
-    .weekly-avatar { width:26px; height:26px; border-radius:50%; object-fit:cover; }
-    .weekly-name { font-size:.78rem; font-weight:800; color:var(--white); }
-    .weekly-sub { font-size:.58rem; font-weight:700; color:var(--soft); text-transform:uppercase; letter-spacing:.08em; }
-    .weekly-goals { display:flex; flex-direction:column; gap:4px; flex:1; justify-content:center; }
-    .wg-row { display:flex; justify-content:space-between; align-items:center; padding:4px 8px; background:rgba(255,255,255,.03); border-radius:6px; }
-    .wg-label { font-size:.64rem; font-weight:700; color:var(--white); }
-    .wg-goal  { font-size:.7rem; font-weight:800; color:var(--blue); }
-    .wg-last  { font-size:.58rem; font-weight:600; color:var(--soft); margin-left:4px; }
-    .wg-last.hit { color:var(--green); }
-    .wg-last.miss { color:var(--red); }
+    .weekly-header { display:flex; align-items:center; gap:8px; margin-bottom:2px; }
+    .weekly-avatar { width:28px; height:28px; border-radius:50%; object-fit:cover; border:1px solid var(--green-b); }
+    .weekly-name { font-size:.82rem; font-weight:800; color:var(--white); }
+    .weekly-sub  { font-size:.58rem; font-weight:700; color:var(--soft); text-transform:uppercase; letter-spacing:.08em; }
+    .weekly-table { width:100%; border-collapse:collapse; }
+    .weekly-table th { font-size:.58rem; font-weight:700; color:var(--soft); text-transform:uppercase; letter-spacing:.06em; padding:2px 6px; text-align:center; }
+    .weekly-table th:first-child { text-align:left; }
+    .weekly-table td { font-size:.72rem; font-weight:700; padding:3px 6px; text-align:center; border-radius:4px; }
+    .weekly-table td:first-child { text-align:left; color:var(--white); font-size:.68rem; }
+    .weekly-table td.hit  { color:var(--green); }
+    .weekly-table td.miss { color:var(--red); }
+    .weekly-table td.goal { color:var(--blue); font-weight:800; }
+    .weekly-table tr:nth-child(even) td { background:rgba(255,255,255,.02); }
 
     #err { display:none; background:rgba(239,68,68,.1); border:1px solid var(--red); color:var(--red); padding:8px; border-radius:8px; font-size:.8rem; text-align:center; }
   </style>
@@ -276,16 +275,34 @@ const REFRESH = 30000;
 // ── SUCCES-HISTORIER — opdater her når I har en ny vinder ──
 const SUCCES = [
   {
-    name: 'Kristtina',
-    img: () => AVATARS.kristtina,
-    prize: '🎭 Klamedia-billetter — Juni 2026',
-    text: 'Den bedste støtte vi kunne ønske os. Sætter altid tid af til at lære os andre nye ting og er bare kærlig og empatisk hele vejen igennem.'
-  },
-  {
     name: 'Oscar',
     img: () => AVATARS.oscar,
     prize: '🏆 Sølvkort til Tivoli — Juni 2025',
     text: 'Sparkede døren ind på Skydebanegade og scorede en helt ny Dahl i Rødovre-kunde. Klassisk Oscar-stil!'
+  },
+  {
+    name: 'Andreas',
+    img: () => AVATARS.andreas,
+    prize: '🎟️ VIP-billetter — Maj 2025',
+    text: 'Lukkede årets største enkeltaftale på under 48 timer. Kunden ringede selv og bad om at skrive under!'
+  },
+  {
+    name: 'Michael',
+    img: () => AVATARS.michael,
+    prize: '🥇 Guldstjerne — Marts 2025',
+    text: 'Solgte 3 store tilbud i sine første 2 måneder. Ny på holdet — men ingen ville vide det. Imponerende start!'
+  },
+  {
+    name: 'Kristtina',
+    img: () => AVATARS.kristtina,
+    prize: '💛 Teamets hjerte — Februar 2025',
+    text: 'Altid empatisk, altid klar med det rigtige tilbud på det rigtige tidspunkt. Holder teamet samlet og kunderne glade.'
+  },
+  {
+    name: 'Camilla',
+    img: () => AVATARS.camilla,
+    prize: '🍾 Champagne + weekend — April 2025',
+    text: 'Holdt styr på hele teamet, Excel-arket OG kaffen — og fik alligevel tid til at lave den bedste kundepræsentation i år.'
   },
 ];
 
@@ -325,7 +342,7 @@ const BIG = [
 ];
 
 const SELLERS = {
-  Andreas: { img:()=>AVATARS.andreas, role:'Account Manager', ytd:'Andreas - ÅTD', bes:'Besigtigelser Andreas', rest:'Woop Restitution Andreas', sleep:'Woop Søvn Andreas', energy:'Woop Energi Andreas' },
+  Andreas: { img:()=>AVATARS.andreas, role:'Account Manager', ytd:'Andreas - ÅTD', rest:'Woop Restitution Andreas', sleep:'Woop Søvn Andreas', energy:'Woop Energi Andreas' },
   Oscar:   { img:()=>AVATARS.oscar,   role:'Account Manager', ytd:'Oscar - ÅTD',   bes:'Besigtigelser Oscar',  rest:'Woop Restitution Oscar',   sleep:'Woop Søvn Oscar',   energy:'Woop Energi Oscar' },
   Michael: { img:()=>AVATARS.michael, role:'Account Manager', ytd:'Michael - ÅTD', bes:'Besigtigelser Michael', rest:'Woop Restitution Michael', sleep:'Woop Søvn Michael', energy:'Woop Energi Michael' },
 };
@@ -353,7 +370,7 @@ function renderStatus(kpis){
     const val=cfg.label==='Indeks'?fmt(k.value,'%')+'%':k.unit==='DKK'?fmt(k.value,'DKK')+' kr':fmt(k.value,k.unit);
     const pct=cfg.prog?Math.min(100,(parseFloat(k.value)/maal)*100):0;
     return `<div class="stat-card ${cfg.cls}">
-      <div><div class="sc-label">${cfg.label}</div><div class="sc-value ${cfg.vcls}">${val}</div><div class="sc-desc">${k.description}</div></div>
+      <div><div class="sc-label">${cfg.label}</div><div class="sc-value ${cfg.vcls}" style="${cfg.label==='To Go'?'font-size:clamp(2.2rem,3.5vw,3.8rem)':''}">${val}</div><div class="sc-desc">${k.description}</div></div>
       ${cfg.prog?`<div class="sc-progress"><div class="sc-pfill" style="width:${pct}%;background:var(--green)"></div></div>`:''}
     </div>`;
   }).join('');
@@ -443,34 +460,42 @@ function renderZone3(kpis){
   startSuccesTimer();
 }
 
+
 function renderZone4(kpis){
   const sellers = [
     {name:'Oscar',   img:()=>AVATARS.oscar},
     {name:'Michael', img:()=>AVATARS.michael},
   ];
-  const goalTypes = [
-    {key:'Kanvas møder',   label:'Kanvas møder'},
-    {key:'Dahl Leads',     label:'Dahl i Rødovre leads'},
-    {key:'Besigtigelser',  label:'Besigtigelser'},
-    {key:'Telefon Kanvas', label:'Telefon kanvas'},
+  const goals = [
+    {key:'Spark dør ind', label:'🚪 Spark dør ind'},
+    {key:'Besigtigelser', label:'🔍 Besigtigelser'},
+    {key:'Kanvasopkald',  label:'📞 Kanvasopkald'},
   ];
+  const uger = ['Uge23','Uge24','Uge25','Uge26'];
+  const ugeLabels = ['Uge 23','Uge 24','Uge 25','Uge 26'];
 
   document.getElementById('zone4').innerHTML = sellers.map(s=>{
-    const rows = goalTypes.map(g=>{
-      const goal = kv(kpis, `${s.name} ${g.key} Mål`);
-      const last = kv(kpis, `${s.name} ${g.key} Sidste`);
-      const hitCls = last >= goal ? 'hit' : 'miss';
-      return `<div class="wg-row">
-        <span class="wg-label">${g.label}</span>
-        <span><span class="wg-goal">${goal}</span><span class="wg-last ${hitCls}"> (sidste: ${last}/${goal})</span></span>
-      </div>`;
+    const rows = goals.map(g=>{
+      const maal = kv(kpis, `${s.name} ${g.key} Mål`);
+      const ugeCells = uger.map((u,i)=>{
+        const val = kv(kpis, `${s.name} ${g.key} ${u}`);
+        const cls = val >= maal ? 'hit' : 'miss';
+        return `<td class="${cls}">${val}</td>`;
+      }).join('');
+      return `<tr><td>${g.label}</td><td class="goal">${maal}</td>${ugeCells}</tr>`;
     }).join('');
+
+    const headers = ugeLabels.map(u=>`<th>${u}</th>`).join('');
+
     return `<div class="weekly-card">
       <div class="weekly-header">
         <img class="weekly-avatar" src="${s.img()}" alt="${s.name}"/>
-        <div><div class="weekly-name">${s.name}</div><div class="weekly-sub">Ugens mål</div></div>
+        <div><div class="weekly-name">${s.name}</div><div class="weekly-sub">Zone 4 — Ugeoversigt</div></div>
       </div>
-      <div class="weekly-goals">${rows}</div>
+      <table class="weekly-table">
+        <thead><tr><th>Aktivitet</th><th>Mål</th>${headers}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
     </div>`;
   }).join('');
 }
