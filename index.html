@@ -33,7 +33,7 @@
     #cfill { height:100%; background:var(--green); transition:width 1s linear; }
 
     /* MAIN — 3 rækker, sidste delt i venstre/højre */
-    main { height:calc(100vh - 52px); display:grid; grid-template-rows:28% 30% 20% 22%; padding:12px 24px 10px; gap:10px; }
+    main { height:calc(100vh - 52px); display:grid; grid-template-rows:36% 37% 27%; padding:12px 24px 10px; gap:10px; }
 
     /* ZONE 1 */
     .zone1 { display:grid; grid-template-columns:260px 1fr; gap:10px; }
@@ -106,7 +106,7 @@
     .b-dim  {background:linear-gradient(90deg,#64748b,#94a3b8);}
 
     /* ZONE 3 — venstre: billetter + goal, højre: succes */
-    .zone3 { display:grid; grid-template-columns:1fr 1fr 1fr 1.3fr 1.3fr; gap:10px; }
+    .zone3 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr 1.2fr 1.4fr; gap:10px; }
 
     .ticket-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:13px 16px; display:flex; flex-direction:column; gap:7px; position:relative; overflow:hidden; }
     .ticket-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),#fbbf24); border-radius:14px 14px 0 0; }
@@ -205,25 +205,6 @@
     .spin-step.n .spin-letter { color:var(--green); }
     .spin-word { font-size:.75rem; font-weight:800; color:var(--white); }
     .spin-desc { font-size:.62rem; color:var(--soft); }
-
-    /* ZONE 4 — UGEOVERSIGT */
-    .zone4 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .weekly-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:10px 14px; display:flex; flex-direction:column; gap:6px; position:relative; overflow:hidden; }
-    .weekly-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--blue),var(--green)); border-radius:14px 14px 0 0; }
-    .weekly-header { display:flex; align-items:center; gap:8px; margin-bottom:2px; }
-    .weekly-avatar { width:28px; height:28px; border-radius:50%; object-fit:cover; border:1px solid var(--green-b); }
-    .weekly-name { font-size:.82rem; font-weight:800; color:var(--white); }
-    .weekly-sub  { font-size:.58rem; font-weight:700; color:var(--soft); text-transform:uppercase; letter-spacing:.08em; }
-    .weekly-table { width:100%; border-collapse:collapse; }
-    .weekly-table th { font-size:.58rem; font-weight:700; color:var(--soft); text-transform:uppercase; letter-spacing:.06em; padding:2px 6px; text-align:center; }
-    .weekly-table th:first-child { text-align:left; }
-    .weekly-table td { font-size:.72rem; font-weight:700; padding:3px 6px; text-align:center; border-radius:4px; }
-    .weekly-table td:first-child { text-align:left; color:var(--white); font-size:.68rem; }
-    .weekly-table td.hit  { color:var(--green); }
-    .weekly-table td.miss { color:var(--red); }
-    .weekly-table td.goal { color:var(--blue); font-weight:800; }
-    .weekly-table tr:nth-child(even) td { background:rgba(255,255,255,.02); }
-
     #err { display:none; background:rgba(239,68,68,.1); border:1px solid var(--red); color:var(--red); padding:8px; border-radius:8px; font-size:.8rem; text-align:center; }
   </style>
 </head>
@@ -265,7 +246,6 @@
 
   <div class="zone2" id="zone2"></div>
   <div class="zone3" id="zone3"></div>
-  <div class="zone4" id="zone4"></div>
 </main>
 
 <script>
@@ -346,7 +326,12 @@ const SELLERS = {
   Oscar:   { img:()=>AVATARS.oscar,   role:'Account Manager', ytd:'Oscar - ÅTD',   bes:'Besigtigelser Oscar',  rest:'Woop Restitution Oscar',   sleep:'Woop Søvn Oscar',   energy:'Woop Energi Oscar' },
   Michael: { img:()=>AVATARS.michael, role:'Account Manager', ytd:'Michael - ÅTD', bes:'Besigtigelser Michael', rest:'Woop Restitution Michael', sleep:'Woop Søvn Michael', energy:'Woop Energi Michael' },
 };
-const TICKETS=['Mick Øgendahl','Anders Lund Madsen'], TTOTAL=60;
+const TICKETS=[
+  {label:'Mick Øgendahl',      total:60},
+  {label:'Don Ø',              total:50},
+  {label:'Anders Lund Madsen', total:60},
+  {label:'Morten Kirchhoff',   total:50},
+];
 
 function fmt(v,u){ const n=parseFloat(v); if(isNaN(n)) return v; if(u==='DKK'){if(n>=1e6)return(n/1e6).toLocaleString('da-DK',{maximumFractionDigits:2})+' M';if(n>=1e3)return(n/1e3).toLocaleString('da-DK',{maximumFractionDigits:1})+' K';}if(u==='%')return n.toLocaleString('da-DK',{maximumFractionDigits:0});return n.toLocaleString('da-DK',{maximumFractionDigits:0}); }
 function kv(kpis,l){ const k=kpis.find(x=>x.label===l); return k?parseFloat(k.value):0; }
@@ -370,7 +355,7 @@ function renderStatus(kpis){
     const val=cfg.label==='Indeks'?fmt(k.value,'%')+'%':k.unit==='DKK'?fmt(k.value,'DKK')+' kr':fmt(k.value,k.unit);
     const pct=cfg.prog?Math.min(100,(parseFloat(k.value)/maal)*100):0;
     return `<div class="stat-card ${cfg.cls}">
-      <div><div class="sc-label">${cfg.label}</div><div class="sc-value ${cfg.vcls}" style="${cfg.label==='To Go'?'font-size:clamp(2.2rem,3.5vw,3.8rem)':''}">${val}</div><div class="sc-desc">${k.description}</div></div>
+      <div><div class="sc-label">${cfg.label}</div><div class="sc-value ${cfg.vcls}">${val}</div><div class="sc-desc">${k.description}</div></div>
       ${cfg.prog?`<div class="sc-progress"><div class="sc-pfill" style="width:${pct}%;background:var(--green)"></div></div>`:''}
     </div>`;
   }).join('');
@@ -395,7 +380,7 @@ function renderZone2(kpis){
       <div class="seller-top">
         <div class="avatar-wrap"><img class="avatar" src="${s.img()}" alt="${name}"/>${rings}</div>
         <div><div class="seller-name">${name}</div><div class="seller-role">${s.role}</div>
-        <div class="woop-badges"><span class="woop-badge wb-sleep">😴 ${sleep}%</span><span class="woop-badge wb-energy">⚡ ${energy}%</span></div></div>
+        <div class="woop-badges"><span class="woop-badge wb-rest">💚 ${rest}%</span><span class="woop-badge wb-sleep">😴 ${sleep}%</span><span class="woop-badge wb-energy">⚡ ${energy}%</span></div></div>
       </div>
       <div class="seller-stats">${stats}</div>
     </div>`;
@@ -410,12 +395,12 @@ function renderZone2(kpis){
 function renderZone3(kpis){
   const maal=kv(kpis,'Mål 2026');
   let html=TICKETS.map(t=>{
-    const k=kpis.find(x=>x.label===t); if(!k) return '';
-    const v=parseFloat(k.value),pct=Math.min(100,(v/TTOTAL)*100);
+    const k=kpis.find(x=>x.label===t.label);
+    const v=k?parseFloat(k.value):0, pct=Math.min(100,(v/t.total)*100);
     return `<div class="ticket-card">
       <div class="ticket-eyebrow">Dahl i Rødovre</div>
-      <div class="ticket-name">${t}</div>
-      <div class="ticket-valrow"><span class="ticket-num">${v}</span><span class="ticket-of">/ ${TTOTAL}</span></div>
+      <div class="ticket-name">${t.label}</div>
+      <div class="ticket-valrow"><span class="ticket-num">${v}</span><span class="ticket-of">/ ${t.total}</span></div>
       <div class="ticket-bar"><div class="ticket-fill" style="width:${pct}%"></div></div>
       <div class="ticket-pct">${pct.toFixed(0)}% afsat</div>
     </div>`;
@@ -460,51 +445,11 @@ function renderZone3(kpis){
   startSuccesTimer();
 }
 
-
-function renderZone4(kpis){
-  const sellers = [
-    {name:'Oscar',   img:()=>AVATARS.oscar},
-    {name:'Michael', img:()=>AVATARS.michael},
-  ];
-  const goals = [
-    {key:'Spark dør ind', label:'🚪 Spark dør ind'},
-    {key:'Besigtigelser', label:'🔍 Besigtigelser'},
-    {key:'Kanvasopkald',  label:'📞 Kanvasopkald'},
-  ];
-  const uger = ['Uge23','Uge24','Uge25','Uge26'];
-  const ugeLabels = ['Uge 23','Uge 24','Uge 25','Uge 26'];
-
-  document.getElementById('zone4').innerHTML = sellers.map(s=>{
-    const rows = goals.map(g=>{
-      const maal = kv(kpis, `${s.name} ${g.key} Mål`);
-      const ugeCells = uger.map((u,i)=>{
-        const val = kv(kpis, `${s.name} ${g.key} ${u}`);
-        const cls = val >= maal ? 'hit' : 'miss';
-        return `<td class="${cls}">${val}</td>`;
-      }).join('');
-      return `<tr><td>${g.label}</td><td class="goal">${maal}</td>${ugeCells}</tr>`;
-    }).join('');
-
-    const headers = ugeLabels.map(u=>`<th>${u}</th>`).join('');
-
-    return `<div class="weekly-card">
-      <div class="weekly-header">
-        <img class="weekly-avatar" src="${s.img()}" alt="${s.name}"/>
-        <div><div class="weekly-name">${s.name}</div><div class="weekly-sub">Zone 4 — Ugeoversigt</div></div>
-      </div>
-      <table class="weekly-table">
-        <thead><tr><th>Aktivitet</th><th>Mål</th>${headers}</tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
-  }).join('');
-}
-
 async function fetchKPIs(){
   try{
     const r=await fetch('/api/kpi'); if(!r.ok) throw new Error('HTTP '+r.status);
     const d=await r.json(); if(d.error) throw new Error(d.error);
-    renderDonut(d.kpis); renderStatus(d.kpis); renderZone2(d.kpis); renderZone3(d.kpis); renderZone4(d.kpis);
+    renderDonut(d.kpis); renderStatus(d.kpis); renderZone2(d.kpis); renderZone3(d.kpis);
     document.getElementById('err').style.display='none';
   }catch(e){
     document.getElementById('err').style.display='block';
