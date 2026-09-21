@@ -32,7 +32,7 @@
     #cfill { height:100%; background:var(--green); transition:width 1s linear; }
 
     /* MAIN — 3 rækker */
-    main { height:calc(100vh - 64px); display:grid; grid-template-rows:90px 1fr 200px; padding:12px 28px 12px; gap:12px; }
+    main { height:calc(100vh - 64px); display:grid; grid-template-rows:88px 1fr 22%; padding:10px 24px 10px; gap:10px; }
 
     /* ROW 1 — 5 KPI-kort */
     .row1 { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
@@ -51,15 +51,15 @@
     .kpi-val.big   { font-size:clamp(1.5rem,2.4vw,2.2rem); }
 
     /* ROW 2 — donut + sælgere */
-    .row2 { display:grid; grid-template-columns:200px 1fr; gap:10px; }
+    .row2 { display:grid; grid-template-columns:190px 1fr; gap:10px; min-height:0; }
 
     /* Donut */
-    .donut-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px 18px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; position:relative; overflow:hidden; }
+    .donut-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px 16px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; position:relative; overflow:hidden; min-height:0; }
     .donut-card::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(71,215,172,.06) 0%,transparent 65%); pointer-events:none; }
-    .donut-wrap { position:relative; width:140px; height:140px; }
+    .donut-wrap { position:relative; width:120px; height:120px; }
     .donut-wrap svg { transform:rotate(-90deg); }
     .donut-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-    .donut-pct { font-size:2.2rem; font-weight:900; color:var(--white); line-height:1; }
+    .donut-pct { font-size:1.8rem; font-weight:900; color:var(--white); line-height:1; }
     .donut-sub { font-size:.58rem; font-weight:700; color:var(--soft); margin-top:3px; letter-spacing:.1em; text-transform:uppercase; }
     .donut-legend { display:flex; flex-direction:column; gap:6px; width:100%; }
     .leg-row { display:flex; justify-content:space-between; align-items:center; }
@@ -68,8 +68,8 @@
     .leg-val { font-size:.75rem; font-weight:800; color:var(--white); }
 
     /* Sælger-grid */
-    .sellers { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-    .seller-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px; display:flex; flex-direction:column; gap:9px; position:relative; overflow:hidden; }
+    .sellers { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; min-height:0; overflow:hidden; }
+    .seller-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:7px; position:relative; overflow:hidden; min-height:0; }
     .seller-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:14px 14px 0 0; }
     .seller-card.rank-1::before { background:linear-gradient(90deg,var(--green),#34d399); }
     .seller-card.rank-2::before { background:linear-gradient(90deg,var(--gold),#fbbf24); }
@@ -97,10 +97,10 @@
     .s-val.blue  { color:#818cf8; }
 
     /* ROW 3 — succes + hund + fremgang */
-    .row3 { display:grid; grid-template-columns:1fr 0.6fr 1.1fr; gap:10px; }
+    .row3 { display:grid; grid-template-columns:1fr 0.55fr 1fr; gap:10px; min-height:0; }
 
     /* Succes */
-    .succes-card { background:var(--card); border:1px solid rgba(201,168,76,.3); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:10px; position:relative; overflow:hidden; box-shadow:0 0 24px rgba(201,168,76,.06); height:100%; }
+    .succes-card { background:var(--card); border:1px solid rgba(201,168,76,.3); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:10px; position:relative; overflow:hidden; box-shadow:0 0 24px rgba(201,168,76,.06); }
     .succes-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),#fbbf24,var(--gold)); border-radius:14px 14px 0 0; }
     .succes-eyebrow { font-size:.6rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); }
     .succes-body { display:flex; align-items:flex-start; gap:12px; flex:1; }
@@ -110,7 +110,7 @@
     .bubble { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:10px 10px 10px 3px; padding:8px 10px; font-size:.75rem; font-weight:600; color:var(--white); line-height:1.5; }
 
     /* Hund */
-    .dog-card { background:var(--card); border:1px solid rgba(245,158,11,.25); border-radius:14px; padding:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; position:relative; overflow:hidden; height:100%; }
+    .dog-card { background:var(--card); border:1px solid rgba(245,158,11,.25); border-radius:14px; padding:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; position:relative; overflow:hidden; }
     .dog-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#f59e0b,#fbbf24); border-radius:14px 14px 0 0; }
     .dog-eyebrow { font-size:.6rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#f59e0b; }
     .dog-emoji { font-size:3rem; }
@@ -158,7 +158,7 @@
   <div class="row2">
     <div class="donut-card">
       <div class="donut-wrap">
-        <svg width="140" height="140" viewBox="0 0 140 140">
+        <svg width="120" height="120" viewBox="0 0 140 140">
           <circle cx="70" cy="70" r="54" fill="none" stroke="#1a1a28" stroke-width="16"/>
           <circle id="darc" cx="70" cy="70" r="54" fill="none" stroke="url(#dg)" stroke-width="16" stroke-linecap="round"
                   stroke-dasharray="339.3" stroke-dashoffset="339.3"
