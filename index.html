@@ -16,13 +16,8 @@
 }
 html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--w);font-family:var(--font)}
 
-/* ── HEADER ── */
-header{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:0 28px;height:56px;
-  background:#0b0b14;border-bottom:1px solid var(--bdr);
-  flex-shrink:0;
-}
+/* HEADER */
+header{display:flex;justify-content:space-between;align-items:center;padding:0 28px;height:56px;background:#0b0b14;border-bottom:1px solid var(--bdr);flex-shrink:0}
 .logo-img{height:34px;width:auto}
 .hdr-r{display:flex;align-items:center;gap:20px}
 #clock{font-size:1.5rem;font-weight:300;letter-spacing:.04em}
@@ -35,152 +30,108 @@ header{
 #cbar{width:72px;height:3px;background:var(--bdr2);border-radius:2px;overflow:hidden}
 #cfill{height:100%;background:var(--g);transition:width 1s linear}
 
-/* ── LAYOUT: header + 3 rækker ── */
-.page{
-  height:calc(100vh - 56px);
-  display:grid;
-  grid-template-rows:17% 46% 37%;
-  padding:14px 24px 12px;
-  gap:12px;
-}
+/* PAGE: 3 rækker */
+.page{height:calc(100vh - 56px);display:grid;grid-template-rows:38% 40% 22%;padding:12px 24px 10px;gap:10px}
 
-/* ── ROW 1: 5 KPI-kort ── */
-.r1{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-.kc{
-  background:var(--card);border:1px solid var(--bdr);border-radius:12px;
-  padding:14px 18px;position:relative;overflow:hidden;
-  display:flex;flex-direction:column;justify-content:center;
-}
+/* ROW 1: Donut til venstre + 5 KPI-kort til højre i 2 rækker */
+.r1{display:grid;grid-template-columns:220px 1fr;gap:12px;min-height:0}
+
+/* Donut */
+.dc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;position:relative;overflow:hidden;min-height:0}
+.dc::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(71,215,172,.07) 0%,transparent 65%);pointer-events:none}
+.dw{position:relative;width:150px;height:150px}
+.dw svg{transform:rotate(-90deg)}
+.dctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.dp{font-size:2.4rem;font-weight:900;color:var(--w);line-height:1}
+.dsb{font-size:.6rem;font-weight:700;color:var(--s);margin-top:3px;letter-spacing:.1em;text-transform:uppercase}
+.dl{display:flex;flex-direction:column;gap:6px;width:100%}
+.dlr{display:flex;justify-content:space-between;align-items:center}
+.dll{display:flex;align-items:center;gap:5px;font-size:.7rem;font-weight:600;color:var(--s)}
+.dld{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dlv{font-size:.75rem;font-weight:800;color:var(--w)}
+
+/* KPI-grid: 2 rækker × 3 kolonner */
+.kgrid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:10px;min-height:0}
+.kc{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:14px 18px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
 .kc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
 .kc.cg::after{background:var(--g)}
 .kc.cb::after{background:var(--b)}
 .kc.cr::after{background:var(--r)}
 .kc.co::after{background:var(--gold)}
 .kc.cd::after{background:var(--bdr2)}
-.kl{font-size:.72rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--s);margin-bottom:6px}
-.kv{font-size:clamp(1.6rem,2.6vw,2.4rem);font-weight:900;line-height:1;color:var(--w)}
+.kl{font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--s);margin-bottom:6px}
+.kv{font-size:clamp(1.5rem,2.4vw,2.2rem);font-weight:900;line-height:1;color:var(--w)}
 .kv.g{color:var(--g)}.kv.r{color:var(--r)}.kv.o{color:var(--gold)}
 
-/* ── ROW 2: 3 sælgerkort + donut ── */
-.r2{display:grid;grid-template-columns:1fr 1fr 1fr 180px;gap:12px;min-height:0}
-
-/* Sælger-kort */
-.sc{
-  background:var(--card);border:1px solid var(--bdr);border-radius:14px;
-  padding:16px;display:flex;flex-direction:column;gap:10px;
-  position:relative;overflow:hidden;min-height:0;
-}
+/* ROW 2: 3 sælgerkort */
+.r2{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;min-height:0}
+.sc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;min-height:0}
 .sc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}
 .sc.r1c::after{background:linear-gradient(90deg,var(--g),#34d399)}
 .sc.r2c::after{background:linear-gradient(90deg,var(--gold),#fbbf24)}
 .sc.r3c::after{background:linear-gradient(90deg,#64748b,#94a3b8)}
-
 .st{display:flex;align-items:center;gap:12px}
-.aw{position:relative;width:64px;height:64px;flex-shrink:0}
-.av{width:64px;height:64px;border-radius:50%;object-fit:cover;position:absolute;inset:0}
-.wr{position:absolute;top:-8px;left:-8px;width:80px;height:80px;transform:rotate(-90deg)}
+.aw{position:relative;width:68px;height:68px;flex-shrink:0}
+.av{width:68px;height:68px;border-radius:50%;object-fit:cover;position:absolute;inset:0}
+.wr{position:absolute;top:-8px;left:-8px;width:84px;height:84px;transform:rotate(-90deg)}
 .si{flex:1;min-width:0}
-.sn{font-size:1.15rem;font-weight:800;color:var(--w);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sn{font-size:1.2rem;font-weight:800;color:var(--w);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sr{font-size:.62rem;font-weight:600;color:var(--s);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
 .wb-wrap{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
 .wb{padding:2px 7px;border-radius:999px;font-size:.62rem;font-weight:800}
 .wb-r{background:rgba(71,215,172,.12);color:var(--g);border:1px solid rgba(71,215,172,.25)}
 .wb-s{background:rgba(99,102,241,.12);color:#818cf8;border:1px solid rgba(99,102,241,.25)}
 .wb-k{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.25)}
-
-/* ÅTD — stort tal */
 .ytd-block{background:rgba(71,215,172,.06);border:1px solid rgba(71,215,172,.15);border-radius:10px;padding:10px 14px}
 .ytd-lbl{font-size:.62rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--s);margin-bottom:3px}
 .ytd-val{font-size:clamp(1.3rem,2vw,1.9rem);font-weight:900;color:var(--g);line-height:1}
-
 .ss{display:flex;flex-direction:column;gap:5px}
 .sr2{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:8px}
 .sl{font-size:.65rem;font-weight:700;color:var(--s);text-transform:uppercase;letter-spacing:.05em}
 .sv{font-size:.95rem;font-weight:800}
 .sv.g{color:var(--g)}.sv.o{color:var(--gold)}.sv.b{color:#818cf8}
 
-/* Donut */
-.dc{
-  background:var(--card);border:1px solid var(--bdr);border-radius:14px;
-  padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-  position:relative;overflow:hidden;min-height:0;
-}
-.dc::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(71,215,172,.07) 0%,transparent 65%);pointer-events:none}
-.dw{position:relative;width:110px;height:110px}
-.dw svg{transform:rotate(-90deg)}
-.dctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.dp{font-size:1.7rem;font-weight:900;color:var(--w);line-height:1}
-.dsb{font-size:.55rem;font-weight:700;color:var(--s);margin-top:2px;letter-spacing:.1em;text-transform:uppercase}
-.dl{display:flex;flex-direction:column;gap:5px;width:100%}
-.dlr{display:flex;justify-content:space-between;align-items:center}
-.dll{display:flex;align-items:center;gap:5px;font-size:.65rem;font-weight:600;color:var(--s)}
-.dld{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.dlv{font-size:.7rem;font-weight:800;color:var(--w)}
-
-/* ── ROW 3: Fremgang + Succes + Hund ── */
+/* ROW 3: Fremgang + Succes + Hund */
 .r3{display:grid;grid-template-columns:1.2fr 1fr 0.55fr;gap:12px;min-height:0}
-
-/* Fremgang */
-.gc{
-  background:var(--card);border:1px solid var(--bdr);border-radius:14px;
-  padding:16px;display:flex;flex-direction:column;gap:10px;
-  position:relative;overflow:hidden;
-}
+.gc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
 .gc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--b),var(--g));border-radius:14px 14px 0 0}
 .gh{display:flex;justify-content:space-between;align-items:center}
-.gl{font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--s)}
-.gbadge{font-size:.8rem;font-weight:900;padding:3px 10px;background:var(--gd);border:1px solid var(--gb);border-radius:999px;color:var(--g)}
-
-/* Stor fremgangsbjælke */
+.gl{font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--s)}
+.gbadge{font-size:.78rem;font-weight:900;padding:3px 10px;background:var(--gd);border:1px solid var(--gb);border-radius:999px;color:var(--g)}
 .big-prog-wrap{display:flex;flex-direction:column;gap:4px}
 .big-prog-lbl{display:flex;justify-content:space-between}
-.big-prog-name{font-size:.8rem;font-weight:700;color:var(--w)}
-.big-prog-val{font-size:.8rem;font-weight:700;color:var(--s)}
-.big-prog-track{height:12px;background:var(--bdr2);border-radius:6px;overflow:hidden}
+.big-prog-name{font-size:.75rem;font-weight:700;color:var(--w)}
+.big-prog-val{font-size:.75rem;font-weight:700;color:var(--s)}
+.big-prog-track{height:11px;background:var(--bdr2);border-radius:6px;overflow:hidden}
 .big-prog-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--g),#34d399);transition:width 1.2s ease}
-
-.gbars{display:flex;flex-direction:column;gap:8px;flex:1;justify-content:center}
+.gbars{display:flex;flex-direction:column;gap:7px;flex:1;justify-content:center}
 .gbr{display:flex;flex-direction:column;gap:3px}
 .gbh{display:flex;justify-content:space-between}
 .gbn{font-size:.72rem;font-weight:700;color:var(--w)}
 .gbv{font-size:.72rem;font-weight:700;color:var(--s)}
-.gbt{height:9px;background:var(--bdr2);border-radius:4px;overflow:hidden}
+.gbt{height:8px;background:var(--bdr2);border-radius:4px;overflow:hidden}
 .gbf{height:100%;border-radius:4px;transition:width 1.2s ease}
 .gf1{background:linear-gradient(90deg,var(--g),#34d399)}
 .gf2{background:linear-gradient(90deg,var(--gold),#fbbf24)}
 .gf3{background:linear-gradient(90deg,#64748b,#94a3b8)}
-
-/* Succes */
-.succ{
-  background:var(--card);border:1px solid rgba(201,168,76,.3);border-radius:14px;
-  padding:16px;display:flex;flex-direction:column;gap:10px;
-  position:relative;overflow:hidden;
-}
+.succ{background:var(--card);border:1px solid rgba(201,168,76,.3);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
 .succ::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),#fbbf24,var(--gold));border-radius:14px 14px 0 0}
-.seb{font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
-.sbody{display:flex;align-items:flex-start;gap:14px;flex:1}
-.sav{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0}
-.sname{font-size:1.5rem;font-weight:900;color:var(--gold);line-height:1}
-.sprize{font-size:.68rem;font-weight:700;color:var(--s);margin-top:3px;margin-bottom:8px}
-.bbl{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px 10px 10px 3px;padding:9px 12px;font-size:.78rem;font-weight:600;color:var(--w);line-height:1.5}
-
-/* Hund */
-.dog{
-  background:var(--card);border:1px solid rgba(245,158,11,.25);border-radius:14px;
-  padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
-  position:relative;overflow:hidden;
-}
+.seb{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.sbody{display:flex;align-items:flex-start;gap:12px;flex:1}
+.sav{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0}
+.sname{font-size:1.4rem;font-weight:900;color:var(--gold);line-height:1}
+.sprize{font-size:.65rem;font-weight:700;color:var(--s);margin-top:3px;margin-bottom:6px}
+.bbl{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px 10px 10px 3px;padding:8px 10px;font-size:.75rem;font-weight:600;color:var(--w);line-height:1.5}
+.dog{background:var(--card);border:1px solid rgba(245,158,11,.25);border-radius:14px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
 .dog::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#fbbf24);border-radius:14px 14px 0 0}
-.deb{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#f59e0b}
-.dem{font-size:3.2rem;line-height:1}
-.dn{font-size:2rem;font-weight:900;color:var(--w)}
-
-#err{display:none;background:rgba(239,68,68,.1);border:1px solid var(--r);color:var(--r);padding:8px;border-radius:8px;font-size:.8rem;text-align:center;grid-column:1/-1}
+.deb{font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#f59e0b}
+.dem{font-size:3rem;line-height:1}
+.dn{font-size:1.9rem;font-weight:900;color:var(--w)}
+#err{display:none;background:rgba(239,68,68,.1);border:1px solid var(--r);color:var(--r);padding:8px;border-radius:8px;font-size:.8rem;text-align:center}
 </style>
 </head>
 <body>
 <script src="avatars.js"></script>
-
 <header>
   <img class="logo-img" id="logo-img" alt="Racoon Facility"/>
   <div class="hdr-r">
@@ -192,15 +143,16 @@ header{
 
 <div class="page">
   <div id="err"></div>
-  <div class="r1" id="r1"></div>
-  <div class="r2" id="r2">
+
+  <!-- ROW 1: Donut + KPI-grid -->
+  <div class="r1">
     <div class="dc">
       <div class="dw">
-        <svg width="110" height="110" viewBox="0 0 110 110">
-          <circle cx="55" cy="55" r="42" fill="none" stroke="#1c1c2e" stroke-width="14"/>
-          <circle id="darc" cx="55" cy="55" r="42" fill="none" stroke="url(#dg)" stroke-width="14" stroke-linecap="round"
-                  stroke-dasharray="263.9" stroke-dashoffset="263.9"
-                  style="transition:stroke-dashoffset 1.5s ease"/>
+        <svg width="150" height="150" viewBox="0 0 150 150">
+          <circle cx="75" cy="75" r="58" fill="none" stroke="#1c1c2e" stroke-width="16"/>
+          <circle id="darc" cx="75" cy="75" r="58" fill="none" stroke="url(#dg)" stroke-width="16" stroke-linecap="round"
+                  stroke-dasharray="364.4" stroke-dashoffset="364.4"
+                  style="transition:stroke-dashoffset 1.5s ease;filter:drop-shadow(0 0 8px rgba(71,215,172,.3))"/>
           <defs><linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#47D7AC"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs>
         </svg>
         <div class="dctr"><div class="dp" id="dpct">-</div><div class="dsb">af mål 2026</div></div>
@@ -211,7 +163,13 @@ header{
         <div class="dlr"><span class="dll"><span class="dld" style="background:var(--b)"></span>Mål 2026</span><span class="dlv" id="lm">-</span></div>
       </div>
     </div>
+    <div class="kgrid" id="kgrid"></div>
   </div>
+
+  <!-- ROW 2: 3 sælgerkort -->
+  <div class="r2" id="r2"></div>
+
+  <!-- ROW 3: Fremgang + Succes + Hund -->
   <div class="r3" id="r3"></div>
 </div>
 
@@ -228,31 +186,31 @@ const BIG = [
 ];
 
 const SELLERS_CFG = {
-  Andreas: {img:()=>AVATARS.andreas, role:'Account Manager', ytd:'Andreas - ÅTD', pipeline:'Andreas Pipeline', kanvas:'Andreas Kanvas Kald', recovery:'Woop Recovery Andreas', sleep:'Woop Sleep Andreas', steps:'Woop Skridt Andreas'},
-  Oscar:   {img:()=>AVATARS.oscar,   role:'Account Manager', ytd:'Oscar - ÅTD',   pipeline:'Oscar Pipeline',   kanvas:'Oscar Kanvas Kald',   recovery:'Woop Recovery Oscar',   sleep:'Woop Sleep Oscar',   steps:'Woop Skridt Oscar'},
-  Michael: {img:()=>AVATARS.michael, role:'Account Manager', ytd:'Michael - ÅTD', pipeline:'Michael Pipeline', kanvas:'Michael Kanvas Kald', recovery:'Woop Recovery Michael', sleep:'Woop Sleep Michael', steps:'Woop Skridt Michael'},
+  Andreas:{img:()=>AVATARS.andreas,role:'Account Manager',ytd:'Andreas - ÅTD',pipeline:'Andreas Pipeline',kanvas:'Andreas Kanvas Kald',recovery:'Woop Recovery Andreas',sleep:'Woop Sleep Andreas',steps:'Woop Skridt Andreas'},
+  Oscar:  {img:()=>AVATARS.oscar,  role:'Account Manager',ytd:'Oscar - ÅTD',  pipeline:'Oscar Pipeline',  kanvas:'Oscar Kanvas Kald',  recovery:'Woop Recovery Oscar',  sleep:'Woop Sleep Oscar',  steps:'Woop Skridt Oscar'},
+  Michael:{img:()=>AVATARS.michael,role:'Account Manager',ytd:'Michael - ÅTD',pipeline:'Michael Pipeline',kanvas:'Michael Kanvas Kald',recovery:'Woop Recovery Michael',sleep:'Woop Sleep Michael',steps:'Woop Skridt Michael'},
 };
 
-const AMAP = {'Andreas':()=>AVATARS.andreas,'Oscar':()=>AVATARS.oscar,'Michael':()=>AVATARS.michael,'Kristtina':()=>AVATARS.kristtina,'Camilla':()=>AVATARS.camilla};
-function gav(name){ const f=AMAP[name]; return f?f():'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#1e2d45"/><circle cx="30" cy="22" r="10" fill="#47D7AC"/><ellipse cx="30" cy="50" rx="16" ry="12" fill="#47D7AC"/></svg>'); }
-
-function fmt(v,u){ const n=parseFloat(v); if(isNaN(n)) return '–'; if(u==='DKK'){if(n>=1e6)return(n/1e6).toLocaleString('da-DK',{maximumFractionDigits:2})+' M';if(n>=1e3)return(n/1e3).toLocaleString('da-DK',{maximumFractionDigits:1})+' K';}if(u==='%')return n.toLocaleString('da-DK',{maximumFractionDigits:1});return n.toLocaleString('da-DK',{maximumFractionDigits:0}); }
-function kv(kpis,l){ const k=kpis.find(x=>x.label===l); return k?parseFloat(k.value):0; }
-function kvs(kpis,l){ const k=kpis.find(x=>x.label===l); return k?k.description||'–':'–'; }
-function wc(v){ return v>=80?'#47D7AC':v>=60?'#C9A84C':'#ef4444'; }
-function ring(cx,cy,r,pct,color,sw){ const c=2*Math.PI*r,off=c-(Math.min(100,pct)/100)*c; return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"/>`; }
+const AMAP={'Andreas':()=>AVATARS.andreas,'Oscar':()=>AVATARS.oscar,'Michael':()=>AVATARS.michael,'Kristtina':()=>AVATARS.kristtina,'Camilla':()=>AVATARS.camilla};
+function gav(n){const f=AMAP[n];return f?f():'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#1e2d45"/><circle cx="30" cy="22" r="10" fill="#47D7AC"/><ellipse cx="30" cy="50" rx="16" ry="12" fill="#47D7AC"/></svg>');}
+function fmt(v,u){const n=parseFloat(v);if(isNaN(n))return'–';if(u==='DKK'){if(n>=1e6)return(n/1e6).toLocaleString('da-DK',{maximumFractionDigits:2})+' M';if(n>=1e3)return(n/1e3).toLocaleString('da-DK',{maximumFractionDigits:1})+' K';}if(u==='%')return n.toLocaleString('da-DK',{maximumFractionDigits:1});return n.toLocaleString('da-DK',{maximumFractionDigits:0});}
+function kv(kpis,l){const k=kpis.find(x=>x.label===l);return k?parseFloat(k.value):0;}
+function kvs(kpis,l){const k=kpis.find(x=>x.label===l);return k?k.description||'–':'–';}
+function wc(v){return v>=80?'#47D7AC':v>=60?'#C9A84C':'#ef4444';}
+function ring(cx,cy,r,pct,color,sw){const c=2*Math.PI*r,off=c-(Math.min(100,pct)/100)*c;return`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"/>`;}
 
 function renderR1(kpis){
-  document.getElementById('r1').innerHTML = BIG.map(cfg=>{
+  const m=kv(kpis,'Mål 2026');
+  document.getElementById('kgrid').innerHTML=BIG.map(cfg=>{
     const k=kpis.find(x=>x.label===cfg.label)||{value:0,unit:'',description:''};
-    const val = cfg.label==='Indeks'?fmt(k.value,'%')+'%':k.unit==='DKK'?fmt(k.value,'DKK')+' kr':fmt(k.value,k.unit);
-    return `<div class="kc ${cfg.cls}"><div class="kl">${cfg.label}</div><div class="kv ${cfg.vcls}">${val}</div></div>`;
+    const val=cfg.label==='Indeks'?fmt(k.value,'%')+'%':k.unit==='DKK'?fmt(k.value,'DKK')+' kr':fmt(k.value,k.unit);
+    return`<div class="kc ${cfg.cls}"><div class="kl">${cfg.label}</div><div class="kv ${cfg.vcls}">${val}</div></div>`;
   }).join('');
 }
 
 function renderDonut(kpis){
   const s=kv(kpis,'Status'),m=kv(kpis,'Mål 2026'),t=kv(kpis,'To Go');
-  const pct=Math.min(100,(s/m)*100),c=2*Math.PI*42;
+  const pct=Math.min(100,(s/m)*100),c=2*Math.PI*58;
   document.getElementById('darc').style.strokeDashoffset=c-(pct/100)*c;
   document.getElementById('dpct').textContent=pct.toLocaleString('da-DK',{maximumFractionDigits:1})+'%';
   document.getElementById('ls').textContent=fmt(s,'DKK')+' kr';
@@ -260,24 +218,17 @@ function renderDonut(kpis){
   document.getElementById('lm').textContent=fmt(m,'DKK')+' kr';
 }
 
-function renderSellers(kpis){
+function renderR2(kpis){
   const ytds=[['Andreas',kv(kpis,'Andreas - ÅTD')],['Oscar',kv(kpis,'Oscar - ÅTD')],['Michael',kv(kpis,'Michael - ÅTD')]];
   ytds.sort((a,b)=>b[1]-a[1]);
-  const rm={}; ytds.forEach(([n],i)=>rm[n]=i+1);
+  const rm={};ytds.forEach(([n],i)=>rm[n]=i+1);
   const rc=['r1c','r2c','r3c'];
-  const r2 = document.getElementById('r2');
-
-  // Fjern gamle seller-kort hvis de findes (bevar donut)
-  r2.querySelectorAll('.sc').forEach(e=>e.remove());
-
-  Object.entries(SELLERS_CFG).forEach(([name,s])=>{
-    const rank=rm[name], cls=rc[rank-1];
-    const ytd=kv(kpis,s.ytd), pl=kv(kpis,s.pipeline), kv2=kv(kpis,s.kanvas);
-    const rec=kv(kpis,s.recovery), slp=kv(kpis,s.sleep), stp=kv(kpis,s.steps);
-    const rings=`<svg class="wr" viewBox="0 0 80 80">${ring(40,40,37,rec,wc(rec),4)}${ring(40,40,30,slp,'#818cf8',4)}${ring(40,40,23,Math.min(100,(stp/10000)*100),wc(Math.min(100,(stp/10000)*100)),4)}</svg>`;
-    const el=document.createElement('div');
-    el.className=`sc ${cls}`;
-    el.innerHTML=`
+  document.getElementById('r2').innerHTML=Object.entries(SELLERS_CFG).map(([name,s])=>{
+    const rank=rm[name],cls=rc[rank-1];
+    const ytd=kv(kpis,s.ytd),pl=kv(kpis,s.pipeline),kn=kv(kpis,s.kanvas);
+    const rec=kv(kpis,s.recovery),slp=kv(kpis,s.sleep),stp=kv(kpis,s.steps);
+    const rings=`<svg class="wr" viewBox="0 0 84 84">${ring(42,42,39,rec,wc(rec),4)}${ring(42,42,32,slp,'#818cf8',4)}${ring(42,42,25,Math.min(100,(stp/10000)*100),wc(Math.min(100,(stp/10000)*100)),4)}</svg>`;
+    return`<div class="sc ${cls}">
       <div class="st">
         <div class="aw"><img class="av" src="${s.img()}" alt="${name}"/>${rings}</div>
         <div class="si">
@@ -296,70 +247,54 @@ function renderSellers(kpis){
       </div>
       <div class="ss">
         <div class="sr2"><span class="sl">Pipeline leads</span><span class="sv o">${pl||'–'}</span></div>
-        <div class="sr2"><span class="sl">Kanvas kald/uge</span><span class="sv b">${kv2||'–'}</span></div>
-      </div>`;
-    // Indsæt INDEN donut (som er sidst i r2)
-    const dc = r2.querySelector('.dc');
-    r2.insertBefore(el, dc);
-  });
+        <div class="sr2"><span class="sl">Kanvas kald/uge</span><span class="sv b">${kn||'–'}</span></div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function renderR3(kpis){
   const maal=kv(kpis,'Mål 2026');
-  const totalS=kv(kpis,'Status'), totalP=Math.min(100,(totalS/maal)*100);
+  const totalS=kv(kpis,'Status'),totalP=Math.min(100,(totalS/maal)*100);
   const sellers=[{n:'Andreas',k:'Andreas - ÅTD',c:'gf1'},{n:'Oscar',k:'Oscar - ÅTD',c:'gf2'},{n:'Michael',k:'Michael - ÅTD',c:'gf3'}];
-
   const goalHtml=`<div class="gc">
     <div class="gh"><div class="gl">Fremgang mod mål 2026</div><div class="gbadge">${totalP.toFixed(1)}% samlet</div></div>
     <div class="big-prog-wrap">
       <div class="big-prog-lbl"><span class="big-prog-name">Samlet team</span><span class="big-prog-val">${fmt(totalS,'DKK')} kr af ${fmt(maal,'DKK')} kr</span></div>
       <div class="big-prog-track"><div class="big-prog-fill" style="width:${Math.max(2,totalP)}%"></div></div>
     </div>
-    <div class="gbars">${sellers.map(s=>{const v=kv(kpis,s.k),p=Math.min(100,(v/maal)*100);return`<div class="gbr"><div class="gbh"><span class="gbn">${s.n}</span><span class="gbv">${fmt(v,'DKK')} kr</span></div><div class="gbt"><div class="gbf ${s.c}" style="width:${Math.max(2,p)}%"></div></div></div>`;}).join('')}
-    </div>
+    <div class="gbars">${sellers.map(s=>{const v=kv(kpis,s.k),p=Math.min(100,(v/maal)*100);return`<div class="gbr"><div class="gbh"><span class="gbn">${s.n}</span><span class="gbv">${fmt(v,'DKK')} kr</span></div><div class="gbt"><div class="gbf ${s.c}" style="width:${Math.max(2,p)}%"></div></div></div>`;}).join('')}</div>
   </div>`;
-
-  const succesNavn=kvs(kpis,'Succes Navn');
+  const sn=kvs(kpis,'Succes Navn');
   const succesHtml=`<div class="succ">
     <div class="seb">🏆 Månedens succes</div>
     <div class="sbody">
-      <img class="sav" src="${gav(succesNavn)}" alt="${succesNavn}"/>
-      <div>
-        <div class="sname">${succesNavn}</div>
-        <div class="sprize">${kvs(kpis,'Succes Præmie')}</div>
-        <div class="bbl">${kvs(kpis,'Succes Tekst')}</div>
-      </div>
+      <img class="sav" src="${gav(sn)}" alt="${sn}"/>
+      <div><div class="sname">${sn}</div><div class="sprize">${kvs(kpis,'Succes Præmie')}</div><div class="bbl">${kvs(kpis,'Succes Tekst')}</div></div>
     </div>
   </div>`;
-
-  const hundNavn=kvs(kpis,'Månedens Hund');
-  const hundHtml=`<div class="dog">
-    <div class="deb">Månedens hund 🐾</div>
-    <div class="dem">🐶</div>
-    <div class="dn">${hundNavn}</div>
-  </div>`;
-
+  const hn=kvs(kpis,'Månedens Hund');
+  const hundHtml=`<div class="dog"><div class="deb">Månedens hund 🐾</div><div class="dem">🐶</div><div class="dn">${hn}</div></div>`;
   document.getElementById('r3').innerHTML=goalHtml+succesHtml+hundHtml;
 }
 
 async function fetchKPIs(){
   try{
-    const r=await fetch('/api/kpi'); if(!r.ok) throw new Error('HTTP '+r.status);
-    const d=await r.json(); if(d.error) throw new Error(d.error);
-    renderR1(d.kpis); renderDonut(d.kpis); renderSellers(d.kpis); renderR3(d.kpis);
+    const r=await fetch('/api/kpi');if(!r.ok)throw new Error('HTTP '+r.status);
+    const d=await r.json();if(d.error)throw new Error(d.error);
+    renderR1(d.kpis);renderDonut(d.kpis);renderR2(d.kpis);renderR3(d.kpis);
     document.getElementById('err').style.display='none';
   }catch(e){
     document.getElementById('err').style.display='block';
     document.getElementById('err').textContent='Fejl: '+e.message;
   }
 }
-
-function clock(){ const n=new Date(); document.getElementById('clock').textContent=n.toLocaleTimeString('da-DK'); document.getElementById('date').textContent=n.toLocaleDateString('da-DK',{weekday:'long',day:'numeric',month:'long'}); }
+function clock(){const n=new Date();document.getElementById('clock').textContent=n.toLocaleTimeString('da-DK');document.getElementById('date').textContent=n.toLocaleDateString('da-DK',{weekday:'long',day:'numeric',month:'long'});}
 let t0=Date.now();
-fetchKPIs(); clock();
+fetchKPIs();clock();
 setInterval(clock,1000);
-setInterval(()=>{ document.getElementById('cfill').style.width=Math.max(0,100-((Date.now()-t0)/REFRESH)*100)+'%'; },500);
-setInterval(()=>{ fetchKPIs(); t0=Date.now(); },REFRESH);
+setInterval(()=>{document.getElementById('cfill').style.width=Math.max(0,100-((Date.now()-t0)/REFRESH)*100)+'%';},500);
+setInterval(()=>{fetchKPIs();t0=Date.now();},REFRESH);
 </script>
 </body>
 </html>
