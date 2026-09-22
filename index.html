@@ -191,7 +191,7 @@ const SELLERS_CFG = {
   Michael:{img:()=>AVATARS.michael,role:'Account Manager',ytd:'Michael - ÅTD',pipeline:'Michael Pipeline',kanvas:'Michael Kanvas Kald',recovery:'Woop Recovery Michael',sleep:'Woop Sleep Michael',steps:'Woop Skridt Michael'},
 };
 
-const AMAP={'Andreas':()=>AVATARS.andreas,'Oscar':()=>AVATARS.oscar,'Michael':()=>AVATARS.michael,'Kristtina':()=>AVATARS.kristtina,'Camilla':()=>AVATARS.camilla};
+const AMAP={'Andreas':()=>AVATARS.andreas,'Oscar':()=>AVATARS.oscar,'Michael':()=>AVATARS.michael,'Kristtina':()=>AVATARS.kristtina,'Camilla':()=>AVATARS.camilla,'Victor':()=>AVATARS.victor};
 function gav(n){const f=AMAP[n];return f?f():'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#1e2d45"/><circle cx="30" cy="22" r="10" fill="#47D7AC"/><ellipse cx="30" cy="50" rx="16" ry="12" fill="#47D7AC"/></svg>');}
 function fmt(v,u){const n=parseFloat(v);if(isNaN(n))return'–';if(u==='DKK'){if(n>=1e6)return(n/1e6).toLocaleString('da-DK',{maximumFractionDigits:2})+' M';if(n>=1e3)return(n/1e3).toLocaleString('da-DK',{maximumFractionDigits:1})+' K';}if(u==='%')return n.toLocaleString('da-DK',{maximumFractionDigits:1});return n.toLocaleString('da-DK',{maximumFractionDigits:0});}
 function kv(kpis,l){const k=kpis.find(x=>x.label===l);return k?parseFloat(k.value):0;}
@@ -246,7 +246,7 @@ function renderR2(kpis){
         <div class="ytd-val">${fmt(ytd,'DKK')} kr</div>
       </div>
       <div class="ss">
-        <div class="sr2"><span class="sl">Pipeline leads</span><span class="sv o">${pl||'–'}</span></div>
+        <div class="sr2"><span class="sl">Pipeline</span><span class="sv o">${pl?fmt(pl,'DKK')+' kr':'–'}</span></div>
         <div class="sr2"><span class="sl">Kanvas kald/uge</span><span class="sv b">${kn||'–'}</span></div>
       </div>
     </div>`;
@@ -274,7 +274,12 @@ function renderR3(kpis){
     </div>
   </div>`;
   const hn=kvs(kpis,'Månedens Hund');
-  const hundHtml=`<div class="dog"><div class="deb">Månedens hund 🐾</div><div class="dem">🐶</div><div class="dn">${hn}</div></div>`;
+  const hundHtml=`<div class="dog">
+    <div class="deb">Månedens hund 🐾</div>
+    <img src="${AVATARS.shivas}" alt="Shivas" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid #f59e0b;margin:4px 0"/>
+    <div class="dn">${hn}</div>
+    <div style="font-size:.68rem;color:var(--s);text-align:center;line-height:1.4;margin-top:2px">for at dele sin yndlings stol med Viggo ❤️</div>
+  </div>`;
   document.getElementById('r3').innerHTML=goalHtml+succesHtml+hundHtml;
 }
 
