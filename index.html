@@ -64,7 +64,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 .kv.g{color:var(--g)}.kv.r{color:var(--r)}.kv.o{color:var(--gold)}
 
 /* ROW 2: 3 sælgerkort */
-.r2{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;min-height:0}
+.r2{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;min-height:0}
 .sc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;min-height:0}
 .sc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}
 .sc.r1c::after{background:linear-gradient(90deg,var(--g),#34d399)}
@@ -189,6 +189,7 @@ const SELLERS_CFG = {
   Andreas:{img:()=>AVATARS.andreas,role:'Account Manager',ytd:'Andreas - ÅTD',pipeline:'Andreas Pipeline',kanvas:'Andreas Kanvas Kald',recovery:'Woop Recovery Andreas',sleep:'Woop Sleep Andreas',steps:'Woop Skridt Andreas'},
   Oscar:  {img:()=>AVATARS.oscar,  role:'Account Manager',ytd:'Oscar - ÅTD',  pipeline:'Oscar Pipeline',  kanvas:'Oscar Kanvas Kald',  recovery:'Woop Recovery Oscar',  sleep:'Woop Sleep Oscar',  steps:'Woop Skridt Oscar'},
   Michael:{img:()=>AVATARS.michael,role:'Account Manager',ytd:'Michael - ÅTD',pipeline:'Michael Pipeline',kanvas:'Michael Kanvas Kald',recovery:'Woop Recovery Michael',sleep:'Woop Sleep Michael',steps:'Woop Skridt Michael'},
+  Victor: {img:()=>AVATARS.victor, role:'Student', leads:'Victor Leads', leadsMaal:'Victor Leads Mål'},
 };
 
 const AMAP={'Andreas':()=>AVATARS.andreas,'Oscar':()=>AVATARS.oscar,'Michael':()=>AVATARS.michael,'Kristtina':()=>AVATARS.kristtina,'Camilla':()=>AVATARS.camilla,'Victor':()=>AVATARS.victor};
@@ -224,6 +225,31 @@ function renderR2(kpis){
   const rm={};ytds.forEach(([n],i)=>rm[n]=i+1);
   const rc=['r1c','r2c','r3c'];
   document.getElementById('r2').innerHTML=Object.entries(SELLERS_CFG).map(([name,s])=>{
+
+    // Victor - særligt kort
+    if(name==='Victor'){
+      const leads=kv(kpis,s.leads), maal=kv(kpis,s.leadsMaal)||120;
+      const pct=Math.min(100,(leads/maal)*100);
+      return`<div class="sc r3c">
+        <div class="st">
+          <div class="aw" style="width:56px;height:56px"><img class="av" src="${s.img()}" alt="${name}" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #64748b"/></div>
+          <div class="si">
+            <div class="sn">${name}</div>
+            <div class="sr">${s.role}</div>
+          </div>
+        </div>
+        <div class="ytd-block">
+          <div class="ytd-lbl">Leads fundet</div>
+          <div class="ytd-val" style="font-size:clamp(1.6rem,2.5vw,2.4rem)">${leads} <span style="font-size:.9rem;color:var(--s);font-weight:400">/ ${maal}</span></div>
+        </div>
+        <div style="height:8px;background:var(--bdr2);border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:${Math.max(2,pct)}%;background:linear-gradient(90deg,var(--g),#34d399);border-radius:4px;transition:width 1.2s ease"></div>
+        </div>
+        <div style="font-size:.65rem;color:var(--s);font-weight:600">Mål: ${maal} leads</div>
+      </div>`;
+    }
+
+    // Andreas, Oscar, Michael
     const rank=rm[name],cls=rc[rank-1];
     const ytd=kv(kpis,s.ytd),pl=kv(kpis,s.pipeline),kn=kv(kpis,s.kanvas);
     const rec=kv(kpis,s.recovery),slp=kv(kpis,s.sleep),stp=kv(kpis,s.steps);
