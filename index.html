@@ -17,7 +17,7 @@
 html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--w);font-family:var(--font)}
 
 /* HEADER */
-header{display:flex;justify-content:space-between;align-items:center;padding:0 28px;height:56px;background:#0b0b14;border-bottom:1px solid var(--bdr);flex-shrink:0}
+header{display:flex;justify-content:space-between;align-items:center;padding:0 20px;height:48px;background:#0b0b14;border-bottom:1px solid var(--bdr);flex-shrink:0}
 .logo-img{height:34px;width:auto}
 .hdr-r{display:flex;align-items:center;gap:20px}
 #clock{font-size:1.5rem;font-weight:300;letter-spacing:.04em}
@@ -31,15 +31,15 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 #cfill{height:100%;background:var(--g);transition:width 1s linear}
 
 /* PAGE: 3 rækker */
-.page{height:calc(100vh - 56px);display:grid;grid-template-rows:38% 40% 22%;padding:12px 24px 10px;gap:10px}
+.page{height:calc(100vh - 48px);display:grid;grid-template-rows:36% 41% 23%;padding:8px 16px 8px;gap:8px}
 
 /* ROW 1: Donut til venstre + 5 KPI-kort til højre i 2 rækker */
-.r1{display:grid;grid-template-columns:220px 1fr;gap:12px;min-height:0}
+.r1{display:grid;grid-template-columns:200px 1fr;gap:8px;min-height:0}
 
 /* Donut */
-.dc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;position:relative;overflow:hidden;min-height:0}
+.dc{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;position:relative;overflow:hidden;min-height:0}
 .dc::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(71,215,172,.07) 0%,transparent 65%);pointer-events:none}
-.dw{position:relative;width:150px;height:150px}
+.dw{position:relative;width:120px;height:120px}
 .dw svg{transform:rotate(-90deg)}
 .dctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .dp{font-size:2.4rem;font-weight:900;color:var(--w);line-height:1}
@@ -52,7 +52,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 
 /* KPI-grid: 2 rækker × 3 kolonner */
 .kgrid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:10px;min-height:0}
-.kc{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:14px 18px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
+.kc{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:10px 14px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
 .kc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
 .kc.cg::after{background:var(--g)}
 .kc.cb::after{background:var(--b)}
@@ -64,8 +64,8 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 .kv.g{color:var(--g)}.kv.r{color:var(--r)}.kv.o{color:var(--gold)}
 
 /* ROW 2: 3 sælgerkort */
-.r2{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;min-height:0}
-.sc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;min-height:0}
+.r2{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;min-height:0}
+.sc{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:7px;position:relative;overflow:hidden;min-height:0}
 .sc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}
 .sc.r1c::after{background:linear-gradient(90deg,var(--g),#34d399)}
 .sc.r2c::after{background:linear-gradient(90deg,var(--gold),#fbbf24)}
@@ -82,18 +82,18 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 .wb-r{background:rgba(71,215,172,.12);color:var(--g);border:1px solid rgba(71,215,172,.25)}
 .wb-s{background:rgba(99,102,241,.12);color:#818cf8;border:1px solid rgba(99,102,241,.25)}
 .wb-k{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.25)}
-.ytd-block{background:rgba(71,215,172,.06);border:1px solid rgba(71,215,172,.15);border-radius:10px;padding:10px 14px}
+.ytd-block{background:rgba(71,215,172,.06);border:1px solid rgba(71,215,172,.15);border-radius:8px;padding:7px 10px}
 .ytd-lbl{font-size:.62rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--s);margin-bottom:3px}
 .ytd-val{font-size:clamp(1.3rem,2vw,1.9rem);font-weight:900;color:var(--g);line-height:1}
 .ss{display:flex;flex-direction:column;gap:5px}
-.sr2{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:8px}
+.sr2{display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:8px}
 .sl{font-size:.65rem;font-weight:700;color:var(--s);text-transform:uppercase;letter-spacing:.05em}
 .sv{font-size:.95rem;font-weight:800}
 .sv.g{color:var(--g)}.sv.o{color:var(--gold)}.sv.b{color:#818cf8}
 
 /* ROW 3: Fremgang + Succes + Hund */
-.r3{display:grid;grid-template-columns:1.2fr 1fr 0.55fr;gap:12px;min-height:0}
-.gc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+.r3{display:grid;grid-template-columns:1.2fr 1fr 0.55fr;gap:8px;min-height:0}
+.gc{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
 .gc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--b),var(--g));border-radius:14px 14px 0 0}
 .gh{display:flex;justify-content:space-between;align-items:center}
 .gl{font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--s)}
@@ -114,7 +114,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 .gf1{background:linear-gradient(90deg,var(--g),#34d399)}
 .gf2{background:linear-gradient(90deg,var(--gold),#fbbf24)}
 .gf3{background:linear-gradient(90deg,#64748b,#94a3b8)}
-.succ{background:var(--card);border:1px solid rgba(201,168,76,.3);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+.succ{background:var(--card);border:1px solid rgba(201,168,76,.3);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
 .succ::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),#fbbf24,var(--gold));border-radius:14px 14px 0 0}
 .seb{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
 .sbody{display:flex;align-items:flex-start;gap:12px;flex:1}
@@ -122,7 +122,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 .sname{font-size:1.4rem;font-weight:900;color:var(--gold);line-height:1}
 .sprize{font-size:.65rem;font-weight:700;color:var(--s);margin-top:3px;margin-bottom:6px}
 .bbl{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px 10px 10px 3px;padding:8px 10px;font-size:.75rem;font-weight:600;color:var(--w);line-height:1.5}
-.dog{background:var(--card);border:1px solid rgba(245,158,11,.25);border-radius:14px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
+.dog{background:var(--card);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
 .dog::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#fbbf24);border-radius:14px 14px 0 0}
 .deb{font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#f59e0b}
 .dem{font-size:3rem;line-height:1}
@@ -148,7 +148,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
   <div class="r1">
     <div class="dc">
       <div class="dw">
-        <svg width="150" height="150" viewBox="0 0 150 150">
+        <svg width="120" height="120" viewBox="0 0 150 150">
           <circle cx="75" cy="75" r="58" fill="none" stroke="#1c1c2e" stroke-width="16"/>
           <circle id="darc" cx="75" cy="75" r="58" fill="none" stroke="url(#dg)" stroke-width="16" stroke-linecap="round"
                   stroke-dasharray="364.4" stroke-dashoffset="364.4"
