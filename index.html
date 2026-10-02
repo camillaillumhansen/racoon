@@ -127,7 +127,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 .deb{font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#f59e0b}
 .dem{font-size:3rem;line-height:1}
 .dn{font-size:1.9rem;font-weight:900;color:var(--w)}
-#err{display:none;background:rgba(239,68,68,.1);border:1px solid var(--r);color:var(--r);padding:8px;border-radius:8px;font-size:.8rem;text-align:center}
+#err{display:none;position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:100;background:rgba(239,68,68,.15);border:1px solid var(--r);color:var(--r);padding:6px 14px;border-radius:8px;font-size:.75rem}
 </style>
 </head>
 <body>
@@ -174,7 +174,8 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 </div>
 
 <script>
-document.getElementById('logo-img').src = LOGO;
+if (typeof AVATARS === 'undefined') window.AVATARS = {};
+if (typeof LOGO !== 'undefined') document.getElementById('logo-img').src = LOGO;
 const REFRESH = 30000;
 
 const BIG = [
@@ -192,8 +193,9 @@ const SELLERS_CFG = {
   Victor: {img:()=>AVATARS.victor, role:'Student', leads:'Victor Leads', leadsMaal:'Victor Leads Mål'},
 };
 
+const FALLBACK='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#1e2d45"/><circle cx="30" cy="22" r="10" fill="#47D7AC"/><ellipse cx="30" cy="50" rx="16" ry="12" fill="#47D7AC"/></svg>');
 const AMAP={'Andreas':()=>AVATARS.andreas,'Oscar':()=>AVATARS.oscar,'Michael':()=>AVATARS.michael,'Kristtina':()=>AVATARS.kristtina,'Camilla':()=>AVATARS.camilla,'Victor':()=>AVATARS.victor};
-function gav(n){const f=AMAP[n];return f?f():'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#1e2d45"/><circle cx="30" cy="22" r="10" fill="#47D7AC"/><ellipse cx="30" cy="50" rx="16" ry="12" fill="#47D7AC"/></svg>');}
+function gav(n){const f=AMAP[n];return (f&&f())?f():'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#1e2d45"/><circle cx="30" cy="22" r="10" fill="#47D7AC"/><ellipse cx="30" cy="50" rx="16" ry="12" fill="#47D7AC"/></svg>');}
 function fmt(v,u){const n=parseFloat(v);if(isNaN(n))return'–';if(u==='DKK'){if(n>=1e6)return(n/1e6).toLocaleString('da-DK',{maximumFractionDigits:2})+' M';if(n>=1e3)return(n/1e3).toLocaleString('da-DK',{maximumFractionDigits:1})+' K';}if(u==='%')return n.toLocaleString('da-DK',{maximumFractionDigits:1});return n.toLocaleString('da-DK',{maximumFractionDigits:0});}
 function kv(kpis,l){const k=kpis.find(x=>x.label===l);return k?parseFloat(k.value):0;}
 function kvs(kpis,l){const k=kpis.find(x=>x.label===l);return k?k.description||'–':'–';}
@@ -232,7 +234,7 @@ function renderR2(kpis){
       const pct=Math.min(100,(leads/maal)*100);
       return`<div class="sc r3c">
         <div class="st">
-          <div class="aw" style="width:56px;height:56px"><img class="av" src="${s.img()}" alt="${name}" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #64748b"/></div>
+          <div class="aw" style="width:56px;height:56px"><img class="av" src="${s.img()||FALLBACK}" alt="${name}" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #64748b"/></div>
           <div class="si">
             <div class="sn">${name}</div>
             <div class="sr">${s.role}</div>
@@ -256,7 +258,7 @@ function renderR2(kpis){
     const rings=`<svg class="wr" viewBox="0 0 84 84">${ring(42,42,39,rec,wc(rec),4)}${ring(42,42,32,slp,'#818cf8',4)}${ring(42,42,25,Math.min(100,(stp/10000)*100),wc(Math.min(100,(stp/10000)*100)),4)}</svg>`;
     return`<div class="sc ${cls}">
       <div class="st">
-        <div class="aw"><img class="av" src="${s.img()}" alt="${name}"/>${rings}</div>
+        <div class="aw"><img class="av" src="${s.img()||FALLBACK}" alt="${name}"/>${rings}</div>
         <div class="si">
           <div class="sn">${name}</div>
           <div class="sr">${s.role}</div>
@@ -302,7 +304,7 @@ function renderR3(kpis){
   const hn=kvs(kpis,'Månedens Hund');
   const hundHtml=`<div class="dog">
     <div class="deb">Månedens hund 🐾</div>
-    <img src="${AVATARS.shivas}" alt="Shivas" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid #f59e0b;margin:4px 0"/>
+    <img src="${AVATARS.shivas||FALLBACK}" alt="Shivas" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid #f59e0b;margin:4px 0"/>
     <div class="dn">${hn}</div>
     <div style="font-size:.68rem;color:var(--s);text-align:center;line-height:1.4;margin-top:2px">for at dele sin yndlings stol med Viggo ❤️</div>
   </div>`;
