@@ -359,7 +359,8 @@ function renderWelcome(s){
     sub.innerHTML=navn?`Vi glæder os til samarbejdet, <b style="color:${farve}">${navn}</b>`:'Vi glæder os til samarbejdet';
   } else {
     t.innerHTML=`<div><span class="wt-g">Racoon</span> <span class="wt-w">byder</span></div><div style="color:${farve}">${hvem}</div><div class="wt-w">velkommen ind i vores</div><div class="wt-hus">hus</div>`;
-    sub.innerHTML=navn?`Vi glæder os til at se dig, <b style="color:${farve}">${navn}</b>`:'Hjertelig velkommen';
+    const flere=/\s(og|&amp;)\s|,/i.test(navn);
+    sub.innerHTML=navn?`Vi glæder os til at se ${flere?'jer':'dig'}, <b style="color:${farve}">${navn}</b>`:'Hjertelig velkommen';
   }
   document.getElementById('wdiv').style.background=`linear-gradient(90deg,#47D7AC,${farve})`;
   document.getElementById('wrac').src=document.getElementById('logo-img').src;
