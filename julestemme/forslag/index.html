@@ -11,47 +11,105 @@
   :root {
     --mint: #3BD4AE;
     --mint-dark: #1fa585;
+    --mint-light: #e3f8f1;
     --ink: #14211d;
     --soft: #f3faf7;
     --muted: #5b6b66;
+    --line: #d5ebe3;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: "Poppins", system-ui, sans-serif; color: var(--ink); background: var(--soft); line-height: 1.6; }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 18px; }
-
-  header { padding: 18px 0; }
-  header .wrap { display: flex; justify-content: space-between; align-items: center; }
-  header img { height: 30px; }
-  .lang { display: flex; background: #fff; border-radius: 999px; padding: 4px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
-  .lang button {
-    border: 0; background: transparent; font: inherit; font-weight: 600; font-size: 14px;
-    padding: 6px 14px; border-radius: 999px; cursor: pointer; color: var(--muted);
+  html, body { height: 100%; }
+  body {
+    margin: 0; font-family: "Poppins", system-ui, sans-serif; color: var(--ink);
+    background: var(--soft); line-height: 1.5; overflow-x: hidden;
   }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 18px; }
+
+  header { padding: 16px 0; }
+  header .wrap { display: flex; justify-content: space-between; align-items: center; }
+  header img { height: 28px; }
+  .lang { display: flex; background: #fff; border-radius: 999px; padding: 4px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+  .lang button { border: 0; background: transparent; font: inherit; font-weight: 600; font-size: 14px; padding: 6px 14px; border-radius: 999px; cursor: pointer; color: var(--muted); }
   .lang button.on { background: var(--mint); color: var(--ink); }
 
-  .hero { text-align: center; padding: 26px 0 34px; }
+  .testmode { background: #fff4d6; color: #7a5a00; font-size: 13px; text-align: center; padding: 6px 12px; }
+
+  /* Progress */
+  .progress { height: 8px; background: #fff; border-radius: 999px; overflow: hidden; margin: 8px 0 26px; }
+  .progress div { height: 100%; width: 0; background: var(--mint); border-radius: 999px; transition: width .35s ease; }
+
+  /* Screens */
+  .screen { display: none; animation: ind .35s ease; }
+  .screen.active { display: block; }
+  @keyframes ind { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
   .tag { display: inline-block; background: #fff; border: 2px solid var(--mint); color: var(--mint-dark); font-weight: 600; font-size: 13px; padding: 5px 14px; border-radius: 999px; margin-bottom: 16px; }
-  h1 { font-size: clamp(30px, 8vw, 46px); line-height: 1.12; margin: 0 0 16px; font-weight: 800; }
-  h1 span { color: var(--mint-dark); }
-  .hero p { font-size: 17px; color: var(--muted); margin: 0 auto 24px; }
-  .deadline { display: inline-block; background: var(--ink); color: #fff; font-weight: 600; padding: 10px 20px; border-radius: 999px; font-size: 15px; }
+  .step-label { font-size: 14px; font-weight: 600; color: var(--mint-dark); margin-bottom: 6px; }
+  h1 { font-size: clamp(30px, 8vw, 46px); line-height: 1.1; margin: 0 0 14px; font-weight: 800; }
+  h1 span, h2 span { color: var(--mint-dark); }
+  h2 { font-size: clamp(24px, 6.5vw, 34px); line-height: 1.15; margin: 0 0 10px; font-weight: 800; }
+  .sub { color: var(--muted); font-size: 16px; margin: 0 0 24px; }
 
-  .box { background: #fff; border-radius: 22px; padding: 24px; margin-bottom: 22px; box-shadow: 0 6px 24px rgba(0,0,0,.05); }
-  h2 { font-size: 22px; margin: 0 0 12px; }
-  .steps { list-style: none; padding: 0; margin: 0; }
-  .steps li { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; }
-  .steps .n { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--mint); display: grid; place-items: center; font-weight: 800; }
+  .money { display: flex; gap: 10px; margin: 22px 0 28px; }
+  .money div { flex: 1; background: #fff; border-radius: 16px; padding: 14px 8px; text-align: center; box-shadow: 0 4px 16px rgba(0,0,0,.05); }
+  .money b { display: block; font-size: 20px; color: var(--mint-dark); }
+  .money small { color: var(--muted); font-size: 12px; }
 
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chips span { background: var(--soft); border: 1px solid #d5ebe3; border-radius: 999px; padding: 6px 12px; font-size: 14px; }
-  .hint { color: var(--muted); font-size: 14px; margin: 12px 0 0; }
+  input[type=text], textarea {
+    width: 100%; font: inherit; font-size: 19px; padding: 16px 18px; border-radius: 16px;
+    border: 2px solid var(--line); background: #fff; color: var(--ink); outline: none; transition: border-color .15s;
+  }
+  input[type=text]:focus, textarea:focus { border-color: var(--mint); }
+  textarea { min-height: 130px; resize: vertical; }
+  .count { text-align: right; font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-  .placeholder { text-align: center; color: var(--muted); padding: 34px 10px; border: 2px dashed var(--mint); border-radius: 16px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .chips button {
+    font: inherit; font-size: 14px; background: #fff; border: 1px solid var(--line); border-radius: 999px;
+    padding: 7px 13px; cursor: pointer; transition: all .15s;
+  }
+  .chips button:hover, .chips button.picked { background: var(--mint-light); border-color: var(--mint); }
+  .chips-label { font-size: 13px; color: var(--muted); margin-top: 18px; }
 
-  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 20px 0 40px; }
+  .choice { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .choice button {
+    font: inherit; font-weight: 600; font-size: 18px; background: #fff; border: 2px solid var(--line);
+    border-radius: 18px; padding: 22px 10px; cursor: pointer; transition: all .15s;
+  }
+  .choice button .e { display: block; font-size: 34px; margin-bottom: 4px; }
+  .choice button:hover { border-color: var(--mint); }
+  .choice button.picked { background: var(--mint-light); border-color: var(--mint); }
+
+  .nav { display: flex; gap: 12px; margin-top: 28px; align-items: center; }
+  .btn {
+    font: inherit; font-weight: 800; font-size: 18px; border: 0; cursor: pointer;
+    background: var(--mint); color: var(--ink); padding: 16px 30px; border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(59,212,174,.35); transition: transform .15s, opacity .15s; flex: 1;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+  .back { font: inherit; font-weight: 600; background: transparent; border: 0; color: var(--muted); cursor: pointer; padding: 14px 6px; }
+  .error { color: #c0392b; font-size: 14px; margin-top: 10px; min-height: 20px; }
+
+  .hp { position: absolute; left: -9999px; }
+
+  /* Done */
+  .done { text-align: center; padding-top: 30px; }
+  .done .big { font-size: 70px; margin-bottom: 10px; }
+  .summary { background: #fff; border-radius: 18px; padding: 18px; margin: 22px 0; text-align: left; border-left: 5px solid var(--mint); }
+  .summary b { display: block; font-size: 20px; }
+  .summary i { color: var(--muted); }
+
+  /* Confetti */
+  .confetti { position: fixed; top: -20px; width: 10px; height: 16px; z-index: 50; pointer-events: none; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 40px 0 30px; }
 </style>
 </head>
 <body>
+
+<div class="testmode" id="testmode" hidden>Testtilstand: svar bliver ikke gemt endnu</div>
 
 <header>
   <div class="wrap">
@@ -63,114 +121,284 @@
   </div>
 </header>
 
-<div class="wrap">
-  <div class="hero">
+<main class="wrap">
+  <div class="progress"><div id="bar"></div></div>
+
+  <!-- 0: Velkomst -->
+  <section class="screen active" data-step="0">
     <div class="tag" data-t="tag"></div>
     <h1 data-t="title"></h1>
-    <p data-t="intro"></p>
-    <div class="deadline" data-t="deadline"></div>
-  </div>
-
-  <div class="box">
-    <h2 data-t="howTitle"></h2>
-    <ul class="steps">
-      <li><div class="n">1</div><span data-t="s1"></span></li>
-      <li><div class="n">2</div><span data-t="s2"></span></li>
-      <li><div class="n">3</div><span data-t="s3"></span></li>
-    </ul>
-  </div>
-
-  <div class="box">
-    <h2 data-t="ideaTitle"></h2>
-    <div class="chips">
-      <span>Kræftens Bekæmpelse</span>
-      <span>Børnecancerfonden</span>
-      <span>SOS Børnebyerne</span>
-      <span>Julemærkefonden</span>
-      <span>Læger uden Grænser</span>
-      <span>Røde Kors</span>
-      <span>Hjerteforeningen</span>
-      <span>Dyrenes Beskyttelse</span>
-      <span>Dyreværnet</span>
-      <span>WWF</span>
-      <span>headspace</span>
-      <span>Mødrehjælpen</span>
+    <p class="sub" data-t="intro"></p>
+    <div class="money">
+      <div><b>120.000</b><small data-t="mTotal"></small></div>
+      <div><b>3</b><small data-t="mWinners"></small></div>
+      <div><b>40.000</b><small data-t="mEach"></small></div>
     </div>
-    <p class="hint" data-t="ideaHint"></p>
-  </div>
+    <div class="nav"><button class="btn" data-next data-t="start"></button></div>
+    <p class="sub" style="margin-top:16px;font-size:14px;text-align:center" data-t="deadline"></p>
+  </section>
 
-  <div class="box" id="form-box"></div>
-</div>
+  <!-- 1: Navn -->
+  <section class="screen" data-step="1">
+    <div class="step-label" data-t="q1label"></div>
+    <h2 data-t="q1"></h2>
+    <p class="sub" data-t="q1sub"></p>
+    <input type="text" id="navn" autocomplete="name" maxlength="80">
+    <div class="error"></div>
+    <div class="nav"><button class="back" data-back data-t="back"></button><button class="btn" data-next data-t="next"></button></div>
+  </section>
+
+  <!-- 2: Formål -->
+  <section class="screen" data-step="2">
+    <div class="step-label" data-t="q2label"></div>
+    <h2 data-t="q2"></h2>
+    <p class="sub" data-t="q2sub"></p>
+    <input type="text" id="formaal" maxlength="120">
+    <div class="chips-label" data-t="chipsLabel"></div>
+    <div class="chips" id="chips"></div>
+    <div class="error"></div>
+    <div class="nav"><button class="back" data-back data-t="back"></button><button class="btn" data-next data-t="next"></button></div>
+  </section>
+
+  <!-- 3: Hvorfor -->
+  <section class="screen" data-step="3">
+    <div class="step-label" data-t="q3label"></div>
+    <h2 data-t="q3"></h2>
+    <p class="sub" data-t="q3sub"></p>
+    <textarea id="hvorfor" maxlength="500"></textarea>
+    <div class="count"><span id="count">0</span>/500</div>
+    <div class="error"></div>
+    <div class="nav"><button class="back" data-back data-t="back"></button><button class="btn" data-next data-t="next"></button></div>
+  </section>
+
+  <!-- 4: Deling -->
+  <section class="screen" data-step="4">
+    <div class="step-label" data-t="q4label"></div>
+    <h2 data-t="q4"></h2>
+    <p class="sub" data-t="q4sub"></p>
+    <div class="choice" data-field="deling">
+      <button data-value="Ja"><span class="e">👍</span><span data-t="yes"></span></button>
+      <button data-value="Nej"><span class="e">🙊</span><span data-t="no"></span></button>
+    </div>
+    <div class="error"></div>
+    <div class="nav"><button class="back" data-back data-t="back"></button><button class="btn" data-next data-t="next"></button></div>
+  </section>
+
+  <!-- 5: Video -->
+  <section class="screen" data-step="5">
+    <div class="step-label" data-t="q5label"></div>
+    <h2 data-t="q5"></h2>
+    <p class="sub" data-t="q5sub"></p>
+    <div class="choice" data-field="video">
+      <button data-value="Ja"><span class="e">🎬</span><span data-t="yesVideo"></span></button>
+      <button data-value="Nej"><span class="e">😅</span><span data-t="noVideo"></span></button>
+    </div>
+    <input class="hp" type="text" id="website" tabindex="-1" autocomplete="off">
+    <div class="error"></div>
+    <div class="nav"><button class="back" data-back data-t="back"></button><button class="btn" id="send" data-t="send"></button></div>
+  </section>
+
+  <!-- 6: Tak -->
+  <section class="screen done" data-step="6">
+    <div class="big">🎉</div>
+    <h2 data-t="thanks"></h2>
+    <p class="sub" data-t="thanksSub"></p>
+    <div class="summary"><b id="sumFormaal"></b><i id="sumHvorfor"></i></div>
+    <p class="sub" data-t="thanksNext"></p>
+    <button class="btn" id="again" style="flex:none" data-t="again"></button>
+  </section>
+</main>
 
 <footer>Racoon · Islevdalvej 182, 2610 Rødovre</footer>
 
 <script>
 /* =========================================================
-   RET HER: Tally-formularens ID til medarbejderforslag
-   (en anden formular end afstemningen)
-   Linket ser ud som https://tally.so/r/abc123 - ID'et er "abc123".
+   RET HER: Adressen til jeres Google Sheet (Apps Script)
+   Den ser ud som https://script.google.com/macros/s/.../exec
+   Står den tom, kører siden i testtilstand og gemmer intet.
    ========================================================= */
-const TALLY_ID = "";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxO6N-RFdO3VRkLe15K4v78S0cIlcpLm1ztLcUIwhDaQUPu4QXUZQvks9FTkTP74AKJhw/exec";
+
+/* RET HER: Inspirationsforslag man kan trykke på */
+const inspiration = [
+  "Kræftens Bekæmpelse", "Børnecancerfonden", "SOS Børnebyerne", "Julemærkefonden",
+  "Læger uden Grænser", "Røde Kors", "Hjerteforeningen", "Dyrenes Beskyttelse",
+  "Dyreværnet", "WWF", "headspace", "Mødrehjælpen"
+];
 
 /* RET HER: Teksterne på dansk og engelsk */
 const tekster = {
   da: {
     tag: "🎄 Kun for Racoon-medarbejdere",
-    title: "Hvem skal have vores <span>120.000 kr.?</span>",
+    title: "Hvem skal have vores <span>julegavepenge?</span>",
     intro: "I år giver vi ikke julegaver til kunderne. Vi giver pengene til gode formål i stedet. Og det er dig, der skal foreslå hvilke.",
-    deadline: "Frist: fredag 23. oktober",
-    howTitle: "Sådan gør du",
-    s1: "Skriv det gode formål, der betyder noget for dig. Det kan være stort eller småt, i Danmark, i dit hjemland eller lige her i Rødovre.",
-    s2: "Skriv én linje om, hvorfor det betyder noget for dig.",
-    s3: "Vi vælger 10 finalister. I november stemmer kunder og alle andre, og de 3 vindere får 40.000 kr. hver.",
-    ideaTitle: "Brug for inspiration?",
-    ideaHint: "Du må gerne foreslå noget helt andet. Der er ingen forkerte svar.",
-    soon: "📝 Formularen åbner snart"
+    mTotal: "kr. i alt", mWinners: "vindere", mEach: "kr. til hver",
+    start: "Kom i gang 👉", deadline: "Det tager 1 minut · Frist fredag 23. oktober",
+    back: "← Tilbage", next: "Næste", send: "Send mit forslag 🚀",
+    q1label: "1 af 5", q1: "Hvad hedder du?", q1sub: "Så vi ved, hvem der har foreslået hvad.",
+    q2label: "2 af 5", q2: "Hvilket <span>godt formål</span> foreslår du?", q2sub: "Stort eller småt. I Danmark, i dit hjemland eller lige her i Rødovre.",
+    chipsLabel: "Brug for inspiration? Tryk på et forslag, eller skriv dit eget:",
+    q3label: "3 af 5", q3: "Hvorfor betyder det <span>noget for dig?</span>", q3sub: "Bare én eller to sætninger. Der er ingen forkerte svar.",
+    q4label: "4 af 5", q4: "Må vi dele dit forslag?", q4sub: "Måske vil vi fortælle om dit forslag og din begrundelse på Racoons sociale medier.",
+    yes: "Ja, gerne", no: "Helst ikke",
+    q5label: "5 af 5", q5: "Vil du være med på video?", q5sub: "Et kort billede eller en video, hvor du fortæller om dit forslag. Det er helt frivilligt.",
+    yesVideo: "Ja, det tør jeg", noVideo: "Nej tak",
+    thanks: "Tak! Dit forslag er sendt", thanksSub: "Du har foreslået:",
+    thanksNext: "Vi vælger 10 finalister blandt alle forslag. I november kan alle stemme, og de 3 vindere får 40.000 kr. hver.",
+    again: "Foreslå et formål mere",
+    errEmpty: "Udfyld feltet, før du går videre.", errPick: "Vælg en af mulighederne.",
+    errSend: "Noget gik galt. Prøv igen, eller sig det til Camilla.", sending: "Sender..."
   },
   en: {
     tag: "🎄 For Racoon employees only",
-    title: "Who should get our <span>120,000 kr.?</span>",
+    title: "Who should get our <span>Christmas gift money?</span>",
     intro: "This year, we're not giving Christmas gifts to our customers. We're giving the money to good causes instead. And you get to suggest which ones.",
-    deadline: "Deadline: Friday 23 October",
-    howTitle: "How it works",
-    s1: "Write down a good cause that matters to you. Big or small, in Denmark, in your home country or right here in Rødovre.",
-    s2: "Write one line about why it matters to you.",
-    s3: "We pick 10 finalists. In November, customers and everyone else vote, and the 3 winners get 40,000 kr. each.",
-    ideaTitle: "Need inspiration?",
-    ideaHint: "You can suggest something completely different. There are no wrong answers.",
-    soon: "📝 The form opens soon"
+    mTotal: "kr. in total", mWinners: "winners", mEach: "kr. each",
+    start: "Let's go 👉", deadline: "Takes 1 minute · Deadline Friday 23 October",
+    back: "← Back", next: "Next", send: "Send my suggestion 🚀",
+    q1label: "1 of 5", q1: "What's your name?", q1sub: "So we know who suggested what.",
+    q2label: "2 of 5", q2: "Which <span>good cause</span> do you suggest?", q2sub: "Big or small. In Denmark, in your home country or right here in Rødovre.",
+    chipsLabel: "Need inspiration? Tap a suggestion or write your own:",
+    q3label: "3 of 5", q3: "Why does it <span>matter to you?</span>", q3sub: "Just one or two sentences. There are no wrong answers.",
+    q4label: "4 of 5", q4: "Can we share your suggestion?", q4sub: "We might tell people about your suggestion and your reason on Racoon's social media.",
+    yes: "Yes, sure", no: "I'd rather not",
+    q5label: "5 of 5", q5: "Want to be in a video?", q5sub: "A short photo or video where you talk about your suggestion. Completely optional.",
+    yesVideo: "Yes, I'm in", noVideo: "No thanks",
+    thanks: "Thank you! Your suggestion is in", thanksSub: "You suggested:",
+    thanksNext: "We'll pick 10 finalists from all suggestions. In November everyone can vote, and the 3 winners get 40,000 kr. each.",
+    again: "Suggest another cause",
+    errEmpty: "Please fill in the field before moving on.", errPick: "Please choose one of the options.",
+    errSend: "Something went wrong. Try again, or tell Camilla.", sending: "Sending..."
   }
 };
 
 /* ---- Herunder skal du ikke rette noget ---- */
 let sprog = "da";
+let step = 0;
+const TOTAL = 6;
+const svar = { deling: "", video: "" };
+const screens = [...document.querySelectorAll(".screen")];
+const t = k => tekster[sprog][k];
+const navn = document.getElementById("navn");
+const formaal = document.getElementById("formaal");
+const hvorfor = document.getElementById("hvorfor");
+
+if (!SHEET_URL) document.getElementById("testmode").hidden = false;
 
 function visTekst() {
   document.documentElement.lang = sprog;
-  document.querySelectorAll("[data-t]").forEach(el => {
-    el.innerHTML = tekster[sprog][el.dataset.t];
-  });
-  document.querySelectorAll(".lang button").forEach(b => {
-    b.classList.toggle("on", b.dataset.lang === sprog);
-  });
-  if (!TALLY_ID) {
-    document.getElementById("form-box").innerHTML =
-      `<div class="placeholder">${tekster[sprog].soon}</div>`;
-  }
+  document.querySelectorAll("[data-t]").forEach(el => { el.innerHTML = t(el.dataset.t); });
+  document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("on", b.dataset.lang === sprog));
+}
+document.querySelectorAll(".lang button").forEach(b =>
+  b.addEventListener("click", () => { sprog = b.dataset.lang; visTekst(); }));
+
+function gaaTil(n) {
+  screens.forEach(s => s.classList.toggle("active", +s.dataset.step === n));
+  step = n;
+  document.getElementById("bar").style.width = (n / TOTAL * 100) + "%";
+  const felt = screens[n].querySelector("input[type=text]:not(.hp), textarea");
+  if (felt) setTimeout(() => felt.focus(), 300);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-document.querySelectorAll(".lang button").forEach(b => {
-  b.addEventListener("click", () => { sprog = b.dataset.lang; visTekst(); });
+function fejl(msg) {
+  const el = screens[step].querySelector(".error");
+  if (el) el.textContent = msg || "";
+}
+
+function gyldig() {
+  if (step === 1 && !navn.value.trim()) return t("errEmpty");
+  if (step === 2 && !formaal.value.trim()) return t("errEmpty");
+  if (step === 3 && !hvorfor.value.trim()) return t("errEmpty");
+  if (step === 4 && !svar.deling) return t("errPick");
+  if (step === 5 && !svar.video) return t("errPick");
+  return "";
+}
+
+document.querySelectorAll("[data-next]").forEach(b => b.addEventListener("click", () => {
+  const f = gyldig(); fejl(f); if (!f) gaaTil(step + 1);
+}));
+document.querySelectorAll("[data-back]").forEach(b => b.addEventListener("click", () => gaaTil(step - 1)));
+
+/* Enter = næste (ikke i tekstfeltet) */
+document.querySelectorAll("input[type=text]").forEach(i => i.addEventListener("keydown", e => {
+  if (e.key === "Enter") { e.preventDefault(); screens[step].querySelector("[data-next]")?.click(); }
+}));
+
+/* Inspirationsknapper */
+const chipBox = document.getElementById("chips");
+inspiration.forEach(navnForslag => {
+  const b = document.createElement("button");
+  b.type = "button"; b.textContent = navnForslag;
+  b.addEventListener("click", () => {
+    formaal.value = navnForslag;
+    chipBox.querySelectorAll("button").forEach(x => x.classList.toggle("picked", x === b));
+    fejl("");
+  });
+  chipBox.appendChild(b);
+});
+formaal.addEventListener("input", () => chipBox.querySelectorAll("button").forEach(x => x.classList.remove("picked")));
+
+/* Tegntæller */
+hvorfor.addEventListener("input", () => { document.getElementById("count").textContent = hvorfor.value.length; });
+
+/* Ja/nej-valg */
+document.querySelectorAll(".choice").forEach(c => {
+  c.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    svar[c.dataset.field] = b.dataset.value;
+    c.querySelectorAll("button").forEach(x => x.classList.toggle("picked", x === b));
+    fejl("");
+    if (c.dataset.field === "deling") setTimeout(() => gaaTil(5), 250);
+  }));
 });
 
-if (TALLY_ID) {
-  document.getElementById("form-box").innerHTML =
-    `<iframe data-tally-src="https://tally.so/embed/${TALLY_ID}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-      loading="lazy" width="100%" height="600" frameborder="0" title="Forslag"></iframe>`;
-  const s = document.createElement("script");
-  s.src = "https://tally.so/widgets/embed.js";
-  s.onload = () => window.Tally && Tally.loadEmbeds();
-  document.body.appendChild(s);
+/* Send */
+const sendBtn = document.getElementById("send");
+sendBtn.addEventListener("click", async () => {
+  const f = gyldig(); fejl(f); if (f) return;
+  if (document.getElementById("website").value) return; // spam-fælde
+
+  sendBtn.disabled = true; sendBtn.textContent = t("sending");
+  const data = new URLSearchParams({
+    navn: navn.value.trim(), formaal: formaal.value.trim(), hvorfor: hvorfor.value.trim(),
+    deling: svar.deling, video: svar.video, sprog
+  });
+
+  try {
+    if (SHEET_URL) await fetch(SHEET_URL, { method: "POST", mode: "no-cors", body: data });
+    document.getElementById("sumFormaal").textContent = formaal.value.trim();
+    document.getElementById("sumHvorfor").textContent = "“" + hvorfor.value.trim() + "”";
+    gaaTil(6);
+    konfetti();
+  } catch (e) {
+    fejl(t("errSend"));
+  } finally {
+    sendBtn.disabled = false; sendBtn.textContent = t("send");
+  }
+});
+
+/* Nyt forslag: behold navnet */
+document.getElementById("again").addEventListener("click", () => {
+  formaal.value = ""; hvorfor.value = ""; document.getElementById("count").textContent = "0";
+  svar.deling = ""; svar.video = "";
+  document.querySelectorAll(".picked").forEach(x => x.classList.remove("picked"));
+  gaaTil(2);
+});
+
+function konfetti() {
+  const farver = ["#3BD4AE", "#1fa585", "#14211d", "#ffd166", "#e2574c", "#ffffff"];
+  for (let i = 0; i < 90; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background = farver[i % farver.length];
+    c.style.animationDuration = 2 + Math.random() * 2.5 + "s";
+    c.style.animationDelay = Math.random() * .6 + "s";
+    c.style.borderRadius = Math.random() > .5 ? "50%" : "2px";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5500);
+  }
 }
 
 visTekst();
