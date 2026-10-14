@@ -25,7 +25,7 @@
   }
   .wrap { max-width: 640px; margin: 0 auto; padding: 0 18px; }
 
-  header { padding: 16px 0; }
+  header { padding: 14px 0; background: var(--ink); margin-bottom: 18px; }
   header .wrap { display: flex; justify-content: space-between; align-items: center; }
   header img { height: 28px; }
   .lang { display: flex; background: #fff; border-radius: 999px; padding: 4px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
@@ -54,6 +54,15 @@
   .money div { flex: 1; background: #fff; border-radius: 16px; padding: 14px 8px; text-align: center; box-shadow: 0 4px 16px rgba(0,0,0,.05); }
   .money b { display: block; font-size: 20px; color: var(--mint-dark); }
   .money small { color: var(--muted); font-size: 12px; }
+
+  .prize { display: flex; gap: 12px; align-items: center; background: var(--ink); color: #fff; border-radius: 16px; padding: 14px 16px; margin: 0 0 16px; font-size: 15px; }
+  .prize .e { font-size: 30px; line-height: 1; }
+  .prize b { color: var(--mint); }
+  .rules { background: #fff; border-radius: 16px; padding: 14px 18px; margin: 0 0 6px; font-size: 14px; }
+  .rules b { display: block; font-size: 15px; margin-bottom: 4px; }
+  .rules ul { margin: 0; padding-left: 18px; color: var(--muted); }
+  .rules li { margin: 2px 0; }
+  .already { background: var(--mint-light); border: 2px solid var(--mint); border-radius: 16px; padding: 12px 16px; font-size: 14px; margin-top: 14px; }
 
   input[type=text], textarea {
     width: 100%; font: inherit; font-size: 19px; padding: 16px 18px; border-radius: 16px;
@@ -130,12 +139,15 @@
     <h1 data-t="title"></h1>
     <p class="sub" data-t="intro"></p>
     <div class="money">
-      <div><b>120.000</b><small data-t="mTotal"></small></div>
-      <div><b>3</b><small data-t="mWinners"></small></div>
-      <div><b>40.000</b><small data-t="mEach"></small></div>
+      <div><b>50.000</b><small data-t="m1"></small></div>
+      <div><b>40.000</b><small data-t="m2"></small></div>
+      <div><b>30.000</b><small data-t="m3"></small></div>
     </div>
+    <div class="prize"><span class="e">🍔</span><span data-t="prize"></span></div>
+    <div class="rules"><b data-t="rulesTitle"></b><ul><li data-t="r1"></li><li data-t="r2"></li><li data-t="r3"></li></ul></div>
     <div class="nav"><button class="btn" data-next data-t="start"></button></div>
     <p class="sub" style="margin-top:16px;font-size:14px;text-align:center" data-t="deadline"></p>
+    <div class="already" id="already" hidden data-t="already"></div>
   </section>
 
   <!-- 1: Navn -->
@@ -204,8 +216,8 @@
     <h2 data-t="thanks"></h2>
     <p class="sub" data-t="thanksSub"></p>
     <div class="summary"><b id="sumFormaal"></b><i id="sumHvorfor"></i></div>
+    <div class="prize" style="text-align:left"><span class="e">🍔</span><span data-t="thanksPrize"></span></div>
     <p class="sub" data-t="thanksNext"></p>
-    <button class="btn" id="again" style="flex:none" data-t="again"></button>
   </section>
 </main>
 
@@ -231,12 +243,18 @@ const tekster = {
   da: {
     tag: "🎄 Kun for Racoon-medarbejdere",
     title: "Hvem skal have vores <span>julegavepenge?</span>",
-    intro: "I år giver vi ikke julegaver til kunderne. Vi giver pengene til gode formål i stedet. Og det er dig, der skal foreslå hvilke.",
-    mTotal: "kr. i alt", mWinners: "vindere", mEach: "kr. til hver",
+    intro: "I år giver vi ikke julegaver til kunderne. Vi giver 120.000 kr. til gode formål i stedet. Og det er dig, der skal foreslå hvilke.",
+    m1: "kr. til nr. 1", m2: "kr. til nr. 2", m3: "kr. til nr. 3",
+    prize: "Alle, der foreslår et formål, er med i lodtrækningen om et <b>gavekort på 500 kr. til McDonald's</b>.",
+    rulesTitle: "Sådan er reglerne",
+    r1: "Ét forslag pr. person.",
+    r2: "Formålet skal være en dansk organisation eller en organisation med kontor i Danmark.",
+    r3: "Salg og Thomas vælger 8 finalister. Derefter stemmer vores kunder.",
+    already: "Du har allerede sendt et forslag fra denne telefon. Tak! Husk: kun ét forslag pr. person.",
     start: "Kom i gang 👉", deadline: "Det tager 1 minut · Frist fredag 23. oktober",
     back: "← Tilbage", next: "Næste", send: "Send mit forslag 🚀",
     q1label: "1 af 5", q1: "Hvad hedder du?", q1sub: "Så vi ved, hvem der har foreslået hvad.",
-    q2label: "2 af 5", q2: "Hvilket <span>godt formål</span> foreslår du?", q2sub: "Stort eller småt. I Danmark, i dit hjemland eller lige her i Rødovre.",
+    q2label: "2 af 5", q2: "Hvilket <span>godt formål</span> foreslår du?", q2sub: "Det skal være en dansk organisation eller en organisation med kontor i Danmark. Stor eller lille, landsdækkende eller lige her i Rødovre.",
     chipsLabel: "Brug for inspiration? Tryk på et forslag, eller skriv dit eget:",
     q3label: "3 af 5", q3: "Hvorfor betyder det <span>noget for dig?</span>", q3sub: "Bare én eller to sætninger. Der er ingen forkerte svar.",
     q4label: "4 af 5", q4: "Må vi dele dit forslag?", q4sub: "Måske vil vi fortælle om dit forslag og din begrundelse på Racoons sociale medier.",
@@ -244,20 +262,26 @@ const tekster = {
     q5label: "5 af 5", q5: "Vil du være med på video?", q5sub: "Et kort billede eller en video, hvor du fortæller om dit forslag. Det er helt frivilligt.",
     yesVideo: "Ja, det tør jeg", noVideo: "Nej tak",
     thanks: "Tak! Dit forslag er sendt", thanksSub: "Du har foreslået:",
-    thanksNext: "Vi vælger 10 finalister blandt alle forslag. I november kan alle stemme, og de 3 vindere får 40.000 kr. hver.",
-    again: "Foreslå et formål mere",
+    thanksPrize: "Du er nu med i lodtrækningen om <b>gavekortet på 500 kr. til McDonald's</b>.",
+    thanksNext: "Salg og Thomas vælger 8 finalister blandt alle forslag. Derefter stemmer vores kunder, og de 3 vindere får 50.000, 40.000 og 30.000 kr.",
     errEmpty: "Udfyld feltet, før du går videre.", errPick: "Vælg en af mulighederne.",
     errSend: "Noget gik galt. Prøv igen, eller sig det til Camilla.", sending: "Sender..."
   },
   en: {
     tag: "🎄 For Racoon employees only",
     title: "Who should get our <span>Christmas gift money?</span>",
-    intro: "This year, we're not giving Christmas gifts to our customers. We're giving the money to good causes instead. And you get to suggest which ones.",
-    mTotal: "kr. in total", mWinners: "winners", mEach: "kr. each",
+    intro: "This year, we're not giving Christmas gifts to our customers. We're giving 120,000 kr. to good causes instead. And you get to suggest which ones.",
+    m1: "kr. for no. 1", m2: "kr. for no. 2", m3: "kr. for no. 3",
+    prize: "Everyone who suggests a cause is in the draw for a <b>500 kr. McDonald's gift card</b>.",
+    rulesTitle: "The rules",
+    r1: "One suggestion per person.",
+    r2: "The cause must be a Danish organisation or an organisation with an office in Denmark.",
+    r3: "Sales and Thomas pick 8 finalists. Then our customers vote.",
+    already: "You've already sent a suggestion from this phone. Thank you! Remember: only one suggestion per person.",
     start: "Let's go 👉", deadline: "Takes 1 minute · Deadline Friday 23 October",
     back: "← Back", next: "Next", send: "Send my suggestion 🚀",
     q1label: "1 of 5", q1: "What's your name?", q1sub: "So we know who suggested what.",
-    q2label: "2 of 5", q2: "Which <span>good cause</span> do you suggest?", q2sub: "Big or small. In Denmark, in your home country or right here in Rødovre.",
+    q2label: "2 of 5", q2: "Which <span>good cause</span> do you suggest?", q2sub: "It must be a Danish organisation or an organisation with an office in Denmark. Big or small, national or right here in Rødovre.",
     chipsLabel: "Need inspiration? Tap a suggestion or write your own:",
     q3label: "3 of 5", q3: "Why does it <span>matter to you?</span>", q3sub: "Just one or two sentences. There are no wrong answers.",
     q4label: "4 of 5", q4: "Can we share your suggestion?", q4sub: "We might tell people about your suggestion and your reason on Racoon's social media.",
@@ -265,8 +289,8 @@ const tekster = {
     q5label: "5 of 5", q5: "Want to be in a video?", q5sub: "A short photo or video where you talk about your suggestion. Completely optional.",
     yesVideo: "Yes, I'm in", noVideo: "No thanks",
     thanks: "Thank you! Your suggestion is in", thanksSub: "You suggested:",
-    thanksNext: "We'll pick 10 finalists from all suggestions. In November everyone can vote, and the 3 winners get 40,000 kr. each.",
-    again: "Suggest another cause",
+    thanksPrize: "You're now in the draw for the <b>500 kr. McDonald's gift card</b>.",
+    thanksNext: "Sales and Thomas pick 8 finalists from all suggestions. Then our customers vote, and the 3 winners get 50,000, 40,000 and 30,000 kr.",
     errEmpty: "Please fill in the field before moving on.", errPick: "Please choose one of the options.",
     errSend: "Something went wrong. Try again, or tell Camilla.", sending: "Sending..."
   }
@@ -369,6 +393,7 @@ sendBtn.addEventListener("click", async () => {
     if (SHEET_URL) await fetch(SHEET_URL, { method: "POST", mode: "no-cors", body: data });
     document.getElementById("sumFormaal").textContent = formaal.value.trim();
     document.getElementById("sumHvorfor").textContent = "“" + hvorfor.value.trim() + "”";
+    husk();
     gaaTil(6);
     konfetti();
   } catch (e) {
@@ -378,13 +403,9 @@ sendBtn.addEventListener("click", async () => {
   }
 });
 
-/* Nyt forslag: behold navnet */
-document.getElementById("again").addEventListener("click", () => {
-  formaal.value = ""; hvorfor.value = ""; document.getElementById("count").textContent = "0";
-  svar.deling = ""; svar.video = "";
-  document.querySelectorAll(".picked").forEach(x => x.classList.remove("picked"));
-  gaaTil(2);
-});
+/* Ét forslag pr. person: en venlig påmindelse, ingen lås */
+function husk() { try { localStorage.setItem("julestemme-forslag", "1"); } catch (e) {} }
+try { if (localStorage.getItem("julestemme-forslag")) document.getElementById("already").hidden = false; } catch (e) {}
 
 function konfetti() {
   const farver = ["#3BD4AE", "#1fa585", "#14211d", "#ffd166", "#e2574c", "#ffffff"];
