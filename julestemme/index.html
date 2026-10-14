@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Julestemme | Racoon</title>
+<meta name="robots" content="noindex">
 <meta name="description" content="I år giver Racoon 120.000 kr. til gode formål i stedet for julegaver. Stem på, hvem der skal have pengene.">
 <meta property="og:title" content="Hvem skal have Racoons julegavepenge?">
 <meta property="og:description" content="Vi giver 120.000 kr. til gode formål. Du bestemmer hvem.">
@@ -13,102 +14,125 @@
   :root {
     --mint: #3BD4AE;
     --mint-dark: #1fa585;
+    --mint-light: #e3f8f1;
     --ink: #14211d;
     --soft: #f3faf7;
     --muted: #5b6b66;
-    --red: #e2574c;
-    --card: #ffffff;
+    --line: #d5ebe3;
   }
   * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: "Poppins", system-ui, sans-serif;
-    color: var(--ink);
-    background: var(--soft);
-    line-height: 1.6;
-  }
+  body { margin: 0; font-family: "Poppins", system-ui, sans-serif; color: var(--ink); background: var(--soft); line-height: 1.6; overflow-x: hidden; }
   a { color: var(--mint-dark); }
   .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
 
-  /* Top */
-  header { padding: 20px 0; }
+  header { padding: 18px 0; background: var(--ink); }
   header .wrap { display: flex; justify-content: space-between; align-items: center; }
   header img { height: 34px; }
-  header a.home { font-size: 14px; text-decoration: none; color: var(--muted); }
+  header a.home { font-size: 14px; text-decoration: none; color: #cfe; }
+
+  .testmode { background: #fff4d6; color: #7a5a00; font-size: 13px; text-align: center; padding: 6px 12px; }
 
   /* Hero */
-  .hero { padding: 40px 0 70px; text-align: center; }
-  .tag {
-    display: inline-block; background: #fff; border: 2px solid var(--mint);
-    color: var(--mint-dark); font-weight: 600; font-size: 14px;
-    padding: 6px 16px; border-radius: 999px; margin-bottom: 20px;
-  }
+  .hero { padding: 56px 0 40px; text-align: center; }
+  .tag { display: inline-block; background: #fff; border: 2px solid var(--mint); color: var(--mint-dark); font-weight: 600; font-size: 14px; padding: 6px 16px; border-radius: 999px; margin-bottom: 20px; }
   .hero h1 { font-size: clamp(32px, 6vw, 58px); line-height: 1.1; margin: 0 0 20px; font-weight: 800; }
   .hero h1 span { color: var(--mint-dark); }
   .hero p { font-size: 19px; color: var(--muted); max-width: 640px; margin: 0 auto 30px; }
   .btn {
-    display: inline-block; background: var(--mint); color: var(--ink); font-weight: 800;
+    display: inline-block; font: inherit; border: 0; cursor: pointer; background: var(--mint); color: var(--ink); font-weight: 800;
     padding: 16px 34px; border-radius: 999px; text-decoration: none; font-size: 18px;
-    box-shadow: 0 8px 24px rgba(59,212,174,.35); transition: transform .15s;
+    box-shadow: 0 8px 24px rgba(59,212,174,.35); transition: transform .15s, opacity .15s;
   }
   .btn:hover { transform: translateY(-2px); }
+  .btn:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
 
-  /* Amount */
-  .amount { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 50px; }
+  .amount { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 46px; }
   .amount div { background: #fff; border-radius: 18px; padding: 22px 10px; box-shadow: 0 4px 18px rgba(0,0,0,.05); }
   .amount b { display: block; font-size: 30px; color: var(--mint-dark); }
   .amount small { color: var(--muted); }
 
-  section { padding: 60px 0; }
-  h2 { font-size: clamp(26px, 4vw, 38px); text-align: center; margin: 0 0 12px; font-weight: 800; }
-  .lead { text-align: center; color: var(--muted); max-width: 620px; margin: 0 auto 40px; }
+  .prize { display: flex; gap: 16px; align-items: center; background: var(--ink); color: #fff; border-radius: 20px; padding: 18px 22px; margin-top: 16px; text-align: left; font-size: 16px; }
+  .prize .e { font-size: 38px; line-height: 1; }
+  .prize b { color: var(--mint); }
 
-  /* Steps */
+  section { padding: 56px 0; }
+  h2 { font-size: clamp(26px, 4vw, 38px); text-align: center; margin: 0 0 12px; font-weight: 800; }
+  .lead { text-align: center; color: var(--muted); max-width: 620px; margin: 0 auto 36px; }
+
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   .step { background: #fff; border-radius: 18px; padding: 28px; }
-  .step .n {
-    width: 42px; height: 42px; border-radius: 50%; background: var(--mint);
-    display: grid; place-items: center; font-weight: 800; margin-bottom: 14px;
-  }
+  .step .n { width: 42px; height: 42px; border-radius: 50%; background: var(--mint); display: grid; place-items: center; font-weight: 800; margin-bottom: 14px; }
   .step h3 { margin: 0 0 6px; font-size: 19px; }
   .step p { margin: 0; color: var(--muted); font-size: 15px; }
 
-  /* Finalists */
-  .finalists { background: #fff; }
+  /* Afstemning */
+  .vote { background: #fff; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
   .card {
-    background: var(--soft); border-radius: 18px; padding: 24px;
-    border: 2px solid transparent; transition: border-color .15s;
+    position: relative; text-align: left; font: inherit; color: inherit; cursor: pointer;
+    background: var(--soft); border-radius: 18px; padding: 22px 22px 22px; border: 2px solid transparent; transition: border-color .15s, background .15s, transform .15s;
   }
-  .card:hover { border-color: var(--mint); }
+  .card:hover { border-color: var(--mint); transform: translateY(-2px); }
+  .card.picked { border-color: var(--mint); background: var(--mint-light); }
+  .card .check {
+    position: absolute; top: 18px; right: 18px; width: 30px; height: 30px; border-radius: 50%;
+    border: 2px solid var(--line); background: #fff; display: grid; place-items: center; font-weight: 800; font-size: 16px; color: transparent;
+  }
+  .card.picked .check { background: var(--mint); border-color: var(--mint); color: var(--ink); }
   .card .nr { font-size: 13px; font-weight: 600; color: var(--mint-dark); }
-  .card h3 { margin: 4px 0 8px; font-size: 20px; }
+  .card h3 { margin: 2px 40px 8px 0; font-size: 20px; line-height: 1.25; }
   .card p { margin: 0 0 14px; font-size: 15px; color: var(--muted); }
-  .card blockquote {
-    margin: 0; padding: 12px 14px; background: #fff; border-left: 4px solid var(--mint);
-    border-radius: 8px; font-size: 14px; font-style: italic;
+  .card blockquote { margin: 0; padding: 12px 14px; background: #fff; border-left: 4px solid var(--mint); border-radius: 8px; font-size: 14px; font-style: italic; }
+  .card blockquote cite { display: block; font-style: normal; font-weight: 600; margin-top: 6px; }
+
+  .form { max-width: 620px; margin: 40px auto 0; background: var(--soft); border-radius: 24px; padding: 28px; }
+  .form h3 { margin: 0 0 4px; font-size: 22px; }
+  .chosen { color: var(--muted); margin: 0 0 20px; }
+  .chosen b { color: var(--ink); }
+  label { display: block; font-weight: 600; font-size: 15px; margin: 14px 0 6px; }
+  label small { font-weight: 400; color: var(--muted); }
+  input[type=text], input[type=email] {
+    width: 100%; font: inherit; font-size: 18px; padding: 14px 16px; border-radius: 14px;
+    border: 2px solid var(--line); background: #fff; color: var(--ink); outline: none;
   }
-  .card blockquote cite { display: block; font-style: normal; font-weight: 600; margin-top: 6px; color: var(--ink); }
+  input:focus { border-color: var(--mint); }
+  .form .btn { width: 100%; margin-top: 22px; }
+  .error { color: #c0392b; font-size: 14px; margin-top: 10px; min-height: 20px; }
+  .note { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
+  .already { background: var(--mint-light); border: 2px solid var(--mint); border-radius: 14px; padding: 10px 14px; font-size: 14px; margin-bottom: 14px; }
+  .hp { position: absolute; left: -9999px; }
 
-  /* Vote */
-  .vote-box { background: #fff; border-radius: 24px; padding: 30px; max-width: 720px; margin: 0 auto; box-shadow: 0 8px 30px rgba(0,0,0,.06); }
-  .placeholder { text-align: center; color: var(--muted); padding: 40px 10px; border: 2px dashed var(--mint); border-radius: 16px; }
+  .closed { text-align: center; color: var(--muted); padding: 40px 10px; border: 2px dashed var(--mint); border-radius: 18px; max-width: 620px; margin: 0 auto; font-size: 17px; }
 
-  /* Timeline */
+  /* Tak */
+  .thanks { display: none; text-align: center; max-width: 620px; margin: 0 auto; }
+  .thanks .big { font-size: 70px; }
+  .thanks .prize { margin: 22px 0; }
+
   .timeline { max-width: 560px; margin: 0 auto; }
   .tl { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid #dde9e4; }
-  .tl b { min-width: 120px; color: var(--mint-dark); }
+  .tl b { min-width: 140px; color: var(--mint-dark); }
+
+  .confetti { position: fixed; top: -20px; width: 10px; height: 16px; z-index: 50; pointer-events: none; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
 
   footer { background: var(--ink); color: #cfe; padding: 40px 0; text-align: center; font-size: 14px; }
   footer a { color: var(--mint); }
 
   @media (max-width: 700px) {
-    .steps, .amount { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .amount { gap: 8px; }
+    .amount div { padding: 16px 4px; }
+    .amount b { font-size: 20px; }
+    .amount small { font-size: 12px; }
     .tl { flex-direction: column; gap: 2px; }
+    .form { padding: 20px; }
   }
 </style>
 </head>
 <body>
+
+<div class="testmode" id="testmode" hidden>Testtilstand: stemmer bliver ikke gemt endnu</div>
 
 <header>
   <div class="wrap">
@@ -121,13 +145,17 @@
   <div class="wrap">
     <div class="tag">🎄 Racoons julestemme 2026</div>
     <h1>Hvem skal have vores <span>julegavepenge?</span></h1>
-    <p>I år giver vi ikke julegaver til vores kunder. Vi giver pengene til gode formål i stedet. Vores medarbejdere har valgt finalisterne. Nu er det din tur til at stemme.</p>
+    <p>I år giver vi ikke julegaver. Vi giver 120.000 kr. til gode formål i stedet. Vores medarbejdere har foreslået finalisterne. Nu er det jeres tur til at stemme.</p>
     <a class="btn" href="#stem">Stem nu</a>
 
     <div class="amount">
-      <div><b>120.000 kr.</b><small>i alt</small></div>
-      <div><b>3 vindere</b><small>med flest stemmer</small></div>
-      <div><b>40.000 kr.</b><small>til hver</small></div>
+      <div><b>50.000 kr.</b><small>til nr. 1</small></div>
+      <div><b>40.000 kr.</b><small>til nr. 2</small></div>
+      <div><b>30.000 kr.</b><small>til nr. 3</small></div>
+    </div>
+    <div class="prize">
+      <span class="e">🧺</span>
+      <span>Hver stemme er et lod i lodtrækningen om <b>3 julekurve med cookies, vin og chokolade</b> til hele kontoret. I må gerne stemme flere fra samme virksomhed.</span>
     </div>
   </div>
 </div>
@@ -137,26 +165,47 @@
     <h2>Sådan foregår det</h2>
     <p class="lead">Det tager under ét minut at være med.</p>
     <div class="steps">
-      <div class="step"><div class="n">1</div><h3>Medarbejderne foreslog</h3><p>Vores kolleger har fortalt, hvilke sager der betyder noget for dem. Ud fra deres forslag har vi valgt 10 finalister.</p></div>
-      <div class="step"><div class="n">2</div><h3>Du stemmer</h3><p>Vælg det formål, du synes skal have pengene. Én stemme pr. person.</p></div>
-      <div class="step"><div class="n">3</div><h3>Vi kører ud med checken</h3><p>De 3 formål med flest stemmer får 40.000 kr. hver. Vi afleverer pengene i december og viser dig, hvordan det gik.</p></div>
+      <div class="step"><div class="n">1</div><h3>Medarbejderne foreslog</h3><p>Alle i Racoon har foreslået et godt formål, der betyder noget for dem. Ud fra deres forslag har vi valgt 8 finalister.</p></div>
+      <div class="step"><div class="n">2</div><h3>I stemmer</h3><p>Vælg det formål, du synes skal have pengene, og skriv dit navn og din virksomhed. Så er du med i lodtrækningen om julekurvene.</p></div>
+      <div class="step"><div class="n">3</div><h3>Vi kører ud med checkene</h3><p>De 3 formål med flest stemmer får 50.000, 40.000 og 30.000 kr. Vi afleverer pengene i starten af december.</p></div>
     </div>
   </div>
 </section>
 
-<section class="finalists">
+<section class="vote" id="stem">
   <div class="wrap">
-    <h2>De 10 finalister</h2>
-    <p class="lead">Foreslået af Racoons medarbejdere.</p>
-    <div class="grid" id="finalist-grid"></div>
-  </div>
-</section>
+    <h2>De 8 finalister</h2>
+    <p class="lead">Foreslået af Racoons medarbejdere. Tryk på det formål, du vil stemme på.</p>
 
-<section id="stem">
-  <div class="wrap">
-    <h2>Afgiv din stemme</h2>
-    <p class="lead">Afstemningen lukker onsdag 25. november.</p>
-    <div class="vote-box" id="vote-box"></div>
+    <div id="vote-area">
+      <div class="grid" id="finalist-grid"></div>
+
+      <div class="form" id="form">
+        <div class="already" id="already" hidden>Der er allerede stemt fra denne enhed. Er du en anden person fra kontoret, er du meget velkommen til at stemme.</div>
+        <h3>Afgiv din stemme</h3>
+        <p class="chosen" id="chosen">Vælg et formål ovenfor.</p>
+        <label for="navn">Dit navn</label>
+        <input type="text" id="navn" autocomplete="name" maxlength="80">
+        <label for="virksomhed">Virksomhed</label>
+        <input type="text" id="virksomhed" autocomplete="organization" maxlength="120">
+        <label for="email">E-mail <small>(valgfri, så vi kan give besked, hvis I vinder en julekurv)</small></label>
+        <input type="email" id="email" autocomplete="email" maxlength="120">
+        <input class="hp" type="text" id="website" tabindex="-1" autocomplete="off">
+        <button class="btn" id="send">Afgiv min stemme</button>
+        <div class="error" id="error"></div>
+        <p class="note">Afstemningen lukker 25. november. Vi bruger kun dine oplysninger til afstemningen og lodtrækningen om julekurvene.</p>
+      </div>
+    </div>
+
+    <div class="closed" id="closed" hidden></div>
+
+    <div class="thanks" id="thanks">
+      <div class="big">🎉</div>
+      <h2>Tak for din stemme!</h2>
+      <p class="lead" style="margin-bottom:0">Du har stemt på <b id="sumStemme"></b>.</p>
+      <div class="prize"><span class="e">🧺</span><span>Du er nu med i lodtrækningen om <b>3 julekurve med cookies, vin og chokolade</b> til hele kontoret.</span></div>
+      <p class="lead">Vi afslører vinderne 1. december og kører ud med checkene i starten af december. Del gerne linket med dine kolleger, så de også kan stemme.</p>
+    </div>
   </div>
 </section>
 
@@ -164,10 +213,10 @@
   <div class="wrap">
     <h2>Tidsplan</h2>
     <div class="timeline">
-      <div class="tl"><b>2. november</b><span>Afstemningen åbner</span></div>
+      <div class="tl"><b>Nu</b><span>Afstemningen er åben</span></div>
       <div class="tl"><b>25. november</b><span>Afstemningen lukker</span></div>
-      <div class="tl"><b>Start december</b><span>Vi afslører de 3 vindere</span></div>
-      <div class="tl"><b>Midt december</b><span>Vi kører ud med checkene</span></div>
+      <div class="tl"><b>1. december</b><span>Vi afslører de 3 vindere og trækker lod om julekurvene</span></div>
+      <div class="tl"><b>Start december</b><span>Vi kører ud med checkene</span></div>
     </div>
   </div>
 </section>
@@ -181,7 +230,7 @@
 
 <script>
 /* =========================================================
-   RET HER: De 10 finalister
+   RET HER: De 8 finalister
    Skift navn, tekst og medarbejdercitat, når I har valgt dem.
    ========================================================= */
 const finalister = [
@@ -192,42 +241,98 @@ const finalister = [
   { navn: "Finalist 5", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" },
   { navn: "Finalist 6", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" },
   { navn: "Finalist 7", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" },
-  { navn: "Finalist 8", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" },
-  { navn: "Finalist 9", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" },
-  { navn: "Finalist 10", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" }
+  { navn: "Finalist 8", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" }
 ];
 
 /* =========================================================
-   RET HER: Tally-formularens ID
-   Find det i Tally under Share. Linket ser ud som
-   https://tally.so/r/abc123 - ID'et er "abc123".
-   Lad det stå tomt, indtil formularen er klar.
+   RET HER: Adressen til Google Sheet (samme Apps Script som forslagssiden)
+   Stemmerne lander i fanen "Stemmer".
    ========================================================= */
-const TALLY_ID = "";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxO6N-RFdO3VRkLe15K4v78S0cIlcpLm1ztLcUIwhDaQUPu4QXUZQvks9FTkTP74AKJhw/exec";
+
+/* RET HER: Hvornår afstemningen lukker (dansk tid) */
+const LUKKER = new Date("2026-11-25T23:59:59+01:00");
 
 /* ---- Herunder skal du ikke rette noget ---- */
-const grid = document.getElementById("finalist-grid");
+let valgt = "";
+const $ = id => document.getElementById(id);
+if (!SHEET_URL) $("testmode").hidden = false;
+
+/* Finalistkort */
+const grid = $("finalist-grid");
 finalister.forEach((f, i) => {
-  const el = document.createElement("div");
+  const el = document.createElement("button");
+  el.type = "button";
   el.className = "card";
   el.innerHTML = `
+    <span class="check">✓</span>
     <div class="nr">Finalist ${i + 1}</div>
-    <h3>${f.navn}</h3>
-    <p>${f.tekst}</p>
-    <blockquote>"${f.citat}"<cite>${f.af}</cite></blockquote>`;
+    <h3></h3><p></p>
+    <blockquote><span class="q"></span><cite></cite></blockquote>`;
+  el.querySelector("h3").textContent = f.navn;
+  el.querySelector("p").textContent = f.tekst;
+  el.querySelector(".q").textContent = "“" + f.citat + "”";
+  el.querySelector("cite").textContent = f.af;
+  el.addEventListener("click", () => {
+    valgt = f.navn;
+    grid.querySelectorAll(".card").forEach(c => c.classList.toggle("picked", c === el));
+    $("chosen").innerHTML = "Du stemmer på <b></b>.";
+    $("chosen").querySelector("b").textContent = f.navn;
+    $("error").textContent = "";
+    if (window.innerWidth < 700) $("form").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
   grid.appendChild(el);
 });
 
-const box = document.getElementById("vote-box");
-if (TALLY_ID) {
-  box.innerHTML = `<iframe data-tally-src="https://tally.so/embed/${TALLY_ID}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-    loading="lazy" width="100%" height="500" frameborder="0" title="Afstemning"></iframe>`;
-  const s = document.createElement("script");
-  s.src = "https://tally.so/widgets/embed.js";
-  s.onload = () => window.Tally && Tally.loadEmbeds();
-  document.body.appendChild(s);
-} else {
-  box.innerHTML = `<div class="placeholder">🗳️ Afstemningen åbner 2. november</div>`;
+/* Lukket? */
+if (new Date() > LUKKER) {
+  $("vote-area").hidden = true;
+  $("closed").hidden = false;
+  $("closed").textContent = "Afstemningen er lukket. Tak til alle, der stemte! Vi afslører vinderne 1. december.";
+}
+
+/* Venlig påmindelse, ingen lås */
+try { if (localStorage.getItem("julestemme-stemt")) $("already").hidden = false; } catch (e) {}
+
+/* Send */
+$("send").addEventListener("click", async () => {
+  const navn = $("navn").value.trim(), virksomhed = $("virksomhed").value.trim(), email = $("email").value.trim();
+  if (!valgt) { $("error").textContent = "Vælg et formål ved at trykke på et af kortene."; return; }
+  if (!navn || !virksomhed) { $("error").textContent = "Skriv dit navn og din virksomhed."; return; }
+  if (email && !/^\S+@\S+\.\S+$/.test(email)) { $("error").textContent = "Tjek din e-mail, eller lad feltet stå tomt."; return; }
+  if ($("website").value) return; // spam-fælde
+
+  const btn = $("send");
+  btn.disabled = true; btn.textContent = "Sender...";
+  try {
+    const data = new URLSearchParams({ type: "stemme", navn, virksomhed, email, stemme: valgt });
+    if (SHEET_URL) await fetch(SHEET_URL, { method: "POST", mode: "no-cors", body: data });
+    try { localStorage.setItem("julestemme-stemt", "1"); } catch (e) {}
+    $("sumStemme").textContent = valgt;
+    $("vote-area").hidden = true;
+    $("thanks").style.display = "block";
+    $("stem").scrollIntoView({ behavior: "smooth" });
+    konfetti();
+  } catch (e) {
+    $("error").textContent = "Noget gik galt. Prøv igen om lidt.";
+  } finally {
+    btn.disabled = false; btn.textContent = "Afgiv min stemme";
+  }
+});
+
+function konfetti() {
+  const farver = ["#3BD4AE", "#1fa585", "#14211d", "#ffd166", "#e2574c", "#ffffff"];
+  for (let i = 0; i < 90; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background = farver[i % farver.length];
+    c.style.animationDuration = 2 + Math.random() * 2.5 + "s";
+    c.style.animationDelay = Math.random() * .6 + "s";
+    c.style.borderRadius = Math.random() > .5 ? "50%" : "2px";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5500);
+  }
 }
 </script>
 </body>
