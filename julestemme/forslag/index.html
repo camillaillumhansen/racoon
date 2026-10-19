@@ -143,7 +143,6 @@
       <div><b>40.000</b><small data-t="m2"></small></div>
       <div><b>30.000</b><small data-t="m3"></small></div>
     </div>
-    <div class="prize"><span class="e">🍔</span><span data-t="prize"></span></div>
     <div class="rules"><b data-t="rulesTitle"></b><ul><li data-t="r1"></li><li data-t="r2"></li><li data-t="r3"></li></ul></div>
     <div class="nav"><button class="btn" data-next data-t="start"></button></div>
     <p class="sub" style="margin-top:16px;font-size:14px;text-align:center" data-t="deadline"></p>
@@ -216,7 +215,6 @@
     <h2 data-t="thanks"></h2>
     <p class="sub" data-t="thanksSub"></p>
     <div class="summary"><b id="sumFormaal"></b><i id="sumHvorfor"></i></div>
-    <div class="prize" style="text-align:left"><span class="e">🍔</span><span data-t="thanksPrize"></span></div>
     <p class="sub" data-t="thanksNext"></p>
   </section>
 </main>
@@ -233,9 +231,18 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbxO6N-RFdO3VRkLe15K4v
 
 /* RET HER: Inspirationsforslag man kan trykke på */
 const inspiration = [
-  "Kræftens Bekæmpelse", "Børnecancerfonden", "SOS Børnebyerne", "Julemærkefonden",
-  "Læger uden Grænser", "Røde Kors", "Hjerteforeningen", "Dyrenes Beskyttelse",
-  "Dyreværnet", "WWF", "headspace", "Mødrehjælpen"
+  { da: "Kræftens Bekæmpelse", en: "Danish Cancer Society" },
+  { da: "Børnecancerfonden", en: "Danish Childhood Cancer Foundation" },
+  { da: "SOS Børnebyerne", en: "SOS Children's Villages" },
+  { da: "Julemærkefonden", en: "Christmas Seal Foundation" },
+  { da: "Læger uden Grænser", en: "Doctors Without Borders" },
+  { da: "Røde Kors", en: "Red Cross" },
+  { da: "Hjerteforeningen", en: "Danish Heart Foundation" },
+  { da: "Dyrenes Beskyttelse", en: "Animal Protection Denmark" },
+  { da: "Dyreværnet", en: "Dyreværnet (animal shelter)" },
+  { da: "WWF", en: "WWF" },
+  { da: "headspace", en: "headspace (youth counselling)" },
+  { da: "Mødrehjælpen", en: "Mødrehjælpen (help for families)" }
 ];
 
 /* RET HER: Teksterne på dansk og engelsk */
@@ -245,7 +252,6 @@ const tekster = {
     title: "Hvem skal have vores <span>julegavepenge?</span>",
     intro: "I år giver vi ikke julegaver til kunderne. Vi giver 120.000 kr. til gode formål i stedet. Og det er dig, der skal foreslå hvilke.",
     m1: "kr. til nr. 1", m2: "kr. til nr. 2", m3: "kr. til nr. 3",
-    prize: "Alle, der foreslår et formål, er med i lodtrækningen om et <b>gavekort på 500 kr. til McDonald's</b>.",
     rulesTitle: "Sådan er reglerne",
     r1: "Ét forslag pr. person.",
     r2: "Formålet skal være en dansk organisation eller en organisation med kontor i Danmark.",
@@ -262,7 +268,6 @@ const tekster = {
     q5label: "5 af 5", q5: "Vil du være med på video?", q5sub: "Et kort billede eller en video, hvor du fortæller om dit forslag. Det er helt frivilligt.",
     yesVideo: "Ja, det tør jeg", noVideo: "Nej tak",
     thanks: "Tak! Dit forslag er sendt", thanksSub: "Du har foreslået:",
-    thanksPrize: "Du er nu med i lodtrækningen om <b>gavekortet på 500 kr. til McDonald's</b>.",
     thanksNext: "Salg og Thomas vælger 8 finalister blandt alle forslag. Derefter stemmer vores kunder, og de 3 vindere får 50.000, 40.000 og 30.000 kr.",
     errEmpty: "Udfyld feltet, før du går videre.", errPick: "Vælg en af mulighederne.",
     errSend: "Noget gik galt. Prøv igen, eller sig det til Camilla.", sending: "Sender..."
@@ -272,7 +277,6 @@ const tekster = {
     title: "Who should get our <span>Christmas gift money?</span>",
     intro: "This year, we're not giving Christmas gifts to our customers. We're giving 120,000 kr. to good causes instead. And you get to suggest which ones.",
     m1: "kr. for no. 1", m2: "kr. for no. 2", m3: "kr. for no. 3",
-    prize: "Everyone who suggests a cause is in the draw for a <b>500 kr. McDonald's gift card</b>.",
     rulesTitle: "The rules",
     r1: "One suggestion per person.",
     r2: "The cause must be a Danish organisation or an organisation with an office in Denmark.",
@@ -289,7 +293,6 @@ const tekster = {
     q5label: "5 of 5", q5: "Want to be in a video?", q5sub: "A short photo or video where you talk about your suggestion. Completely optional.",
     yesVideo: "Yes, I'm in", noVideo: "No thanks",
     thanks: "Thank you! Your suggestion is in", thanksSub: "You suggested:",
-    thanksPrize: "You're now in the draw for the <b>500 kr. McDonald's gift card</b>.",
     thanksNext: "Sales and Thomas pick 8 finalists from all suggestions. Then our customers vote, and the 3 winners get 50,000, 40,000 and 30,000 kr.",
     errEmpty: "Please fill in the field before moving on.", errPick: "Please choose one of the options.",
     errSend: "Something went wrong. Try again, or tell Camilla.", sending: "Sending..."
@@ -313,6 +316,7 @@ function visTekst() {
   document.documentElement.lang = sprog;
   document.querySelectorAll("[data-t]").forEach(el => { el.innerHTML = t(el.dataset.t); });
   document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("on", b.dataset.lang === sprog));
+  if (typeof visChips === "function") visChips();
 }
 document.querySelectorAll(".lang button").forEach(b =>
   b.addEventListener("click", () => { sprog = b.dataset.lang; visTekst(); }));
@@ -352,17 +356,25 @@ document.querySelectorAll("input[type=text]").forEach(i => i.addEventListener("k
 
 /* Inspirationsknapper */
 const chipBox = document.getElementById("chips");
-inspiration.forEach(navnForslag => {
-  const b = document.createElement("button");
-  b.type = "button"; b.textContent = navnForslag;
-  b.addEventListener("click", () => {
-    formaal.value = navnForslag;
-    chipBox.querySelectorAll("button").forEach(x => x.classList.toggle("picked", x === b));
-    fejl("");
+let valgtChip = -1;
+function visChips() {
+  chipBox.innerHTML = "";
+  inspiration.forEach((o, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = o[sprog];
+    if (i === valgtChip) b.classList.add("picked");
+    b.addEventListener("click", () => {
+      valgtChip = i;
+      /* I arket står altid det danske navn, så forslagene er nemme at sammenligne */
+      formaal.value = sprog === "da" || o.da === o.en ? o.da : o.en + " (" + o.da + ")";
+      if (o.en.startsWith(o.da)) formaal.value = o.da;
+      chipBox.querySelectorAll("button").forEach(x => x.classList.toggle("picked", x === b));
+      fejl("");
+    });
+    chipBox.appendChild(b);
   });
-  chipBox.appendChild(b);
-});
-formaal.addEventListener("input", () => chipBox.querySelectorAll("button").forEach(x => x.classList.remove("picked")));
+}
+formaal.addEventListener("input", () => { valgtChip = -1; chipBox.querySelectorAll("button").forEach(x => x.classList.remove("picked")); });
 
 /* Tegntæller */
 hvorfor.addEventListener("input", () => { document.getElementById("count").textContent = hvorfor.value.length; });
@@ -422,6 +434,7 @@ function konfetti() {
   }
 }
 
+visChips();
 visTekst();
 </script>
 </body>
