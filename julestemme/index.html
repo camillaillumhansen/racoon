@@ -69,6 +69,7 @@
   .vote { background: #fff; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
   .card {
+    display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch;
     position: relative; text-align: left; font: inherit; color: inherit; cursor: pointer;
     background: var(--soft); border-radius: 18px; padding: 22px 22px 22px; border: 2px solid transparent; transition: border-color .15s, background .15s, transform .15s;
   }
@@ -82,7 +83,7 @@
   .card .nr { font-size: 13px; font-weight: 600; color: var(--mint-dark); }
   .card h3 { margin: 2px 40px 8px 0; font-size: 20px; line-height: 1.25; }
   .card p { margin: 0 0 14px; font-size: 15px; color: var(--muted); }
-  .card blockquote { margin: 0; padding: 12px 14px; background: #fff; border-left: 4px solid var(--mint); border-radius: 8px; font-size: 14px; font-style: italic; }
+  .card blockquote { margin: auto 0 0; padding: 12px 14px; background: #fff; border-left: 4px solid var(--mint); border-radius: 8px; font-size: 14px; font-style: italic; }
   .card blockquote cite { display: block; font-style: normal; font-weight: 600; margin-top: 6px; }
 
   .form { max-width: 620px; margin: 40px auto 0; background: var(--soft); border-radius: 24px; padding: 28px; }
@@ -234,14 +235,14 @@
    Skift navn, tekst og medarbejdercitat, når I har valgt dem.
    ========================================================= */
 const finalister = [
-  { navn: "Finalist 1", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" },
-  { navn: "Finalist 2", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" },
-  { navn: "Finalist 3", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" },
-  { navn: "Finalist 4", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" },
-  { navn: "Finalist 5", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" },
-  { navn: "Finalist 6", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" },
-  { navn: "Finalist 7", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" },
-  { navn: "Finalist 8", tekst: "Kort beskrivelse af hvad organisationen gør.", citat: "Hvorfor dette formål betyder noget for mig.", af: "Navn, stilling" }
+  { navn: "Børnecancerfonden", tekst: "Støtter børn med kræft og deres familier og giver penge til forskning i børnekræft.", citat: "Fordi et barneliv ikke skal være forgæves.", af: "Michael Lind" },
+  { navn: "Dyreværnet", tekst: "Driver blandt andet internatet i Rødovre og hjælper hjemløse og forsømte dyr til et nyt og trygt hjem.", citat: "Dyr har som regel ikke en stemme for sig selv. Dyreværnet hjælper dyr med omplacering og med at finde tryghed i mennesker igen.", af: "Jonatan Zyskind" },
+  { navn: "Dyrenes Beskyttelse", tekst: "Hjælper dyr i nød i hele landet og arbejder for bedre dyrevelfærd.", citat: "Dyr kan ikke passe på sig selv, så de har brug for vores kærlighed, omsorg og beskyttelse.", af: "Greta" },
+  { navn: "Julemærkefonden", tekst: "Driver Julemærkehjemmene, hvor børn i mistrivsel får et ophold, der styrker deres selvværd og trivsel.", citat: "Børns trivsel ligger mig meget på sinde. Jeg har haft klassekammerater, der var afsted, og de kom hjem som forandrede mennesker.", af: "Rasmus Stripp" },
+  { navn: "Kræftens Bekæmpelse", tekst: "Forsker i kræft, arbejder med forebyggelse og støtter kræftpatienter og pårørende.", citat: "Det betyder meget for mig, fordi min bedstemor døde af kræft sidste år.", af: "Steffany" },
+  { navn: "headspace", tekst: "Giver gratis og anonym rådgivning til unge, der har brug for nogen at tale med.", citat: "Alle fortjener at blive hørt, forstået og støttet. Nogle gange kan det at lytte gøre en verden til forskel.", af: "Hattie" },
+  { navn: "Hjerteforeningen", tekst: "Bekæmper hjertesygdomme og arbejder for flere hjertestartere og flere, der kan give førstehjælp.", citat: "Som hjerteløber har jeg oplevet, hvordan en hjertestarter tæt på kan gøre forskellen på liv og død. Derfor skal der flere hjertestartere ud i Danmark.", af: "Oscar" },
+  { navn: "Broen Danmark", tekst: "Hjælper udsatte børn ind i foreningslivet ved at betale kontingent og udstyr til fx sport og spejder.", citat: "Jeg ved fra egen erfaring, hvor vigtige foreninger er for børn, og hvor meget det betyder at være med i et fællesskab.", af: "Kristtina" }
 ];
 
 /* =========================================================
