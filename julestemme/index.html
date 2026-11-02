@@ -163,7 +163,7 @@
     <p class="lead">Det tager under ét minut at være med.</p>
     <div class="steps">
       <div class="step"><div class="n">1</div><h3>Medarbejderne foreslog</h3><p>Alle i Racoon har foreslået et godt formål, der betyder noget for dem. Ud fra deres forslag har vi valgt 8 finalister.</p></div>
-      <div class="step"><div class="n">2</div><h3>I stemmer</h3><p>Vælg det formål, du synes skal have pengene, og skriv dit navn og din virksomhed. Så er du med i lodtrækningen om julekurvene.</p></div>
+      <div class="step"><div class="n">2</div><h3>I stemmer</h3><p>Vælg det formål, du synes skal have pengene, og skriv dit navn og din virksomhed. I må gerne stemme flere fra samme virksomhed.</p></div>
       <div class="step"><div class="n">3</div><h3>Vi kører ud med checkene</h3><p>De 3 formål med flest stemmer får 50.000, 40.000 og 30.000 kr. Vi afleverer pengene i starten af december.</p></div>
     </div>
   </div>
@@ -185,12 +185,10 @@
         <input type="text" id="navn" autocomplete="name" maxlength="80">
         <label for="virksomhed">Virksomhed</label>
         <input type="text" id="virksomhed" autocomplete="organization" maxlength="120">
-        <label for="email">E-mail <small>(valgfri, så vi kan give besked, hvis I vinder en julekurv)</small></label>
-        <input type="email" id="email" autocomplete="email" maxlength="120">
         <input class="hp" type="text" id="website" tabindex="-1" autocomplete="off">
         <button class="btn" id="send">Afgiv min stemme</button>
         <div class="error" id="error"></div>
-        <p class="note">Afstemningen lukker 25. november. Vi bruger kun dine oplysninger til afstemningen og lodtrækningen om julekurvene.</p>
+        <p class="note">Afstemningen lukker 25. november. Vi bruger kun dine oplysninger til afstemningen.</p>
       </div>
     </div>
 
@@ -200,7 +198,6 @@
       <div class="big">🎉</div>
       <h2>Tak for din stemme!</h2>
       <p class="lead" style="margin-bottom:0">Du har stemt på <b id="sumStemme"></b>.</p>
-      <div class="prize"><span class="e">🧺</span><span>Du er nu med i lodtrækningen om <b>3 julekurve med cookies, vin og chokolade</b> til hele kontoret.</span></div>
       <p class="lead">Vi afslører vinderne 1. december og kører ud med checkene i starten af december. Del gerne linket med dine kolleger, så de også kan stemme.</p>
     </div>
   </div>
@@ -212,7 +209,7 @@
     <div class="timeline">
       <div class="tl"><b>Nu</b><span>Afstemningen er åben</span></div>
       <div class="tl"><b>25. november</b><span>Afstemningen lukker</span></div>
-      <div class="tl"><b>1. december</b><span>Vi afslører de 3 vindere og trækker lod om julekurvene</span></div>
+      <div class="tl"><b>1. december</b><span>Vi afslører de 3 vindere</span></div>
       <div class="tl"><b>Start december</b><span>Vi kører ud med checkene</span></div>
     </div>
   </div>
@@ -293,10 +290,9 @@ try { if (localStorage.getItem("julestemme-stemt")) $("already").hidden = false;
 
 /* Send */
 $("send").addEventListener("click", async () => {
-  const navn = $("navn").value.trim(), virksomhed = $("virksomhed").value.trim(), email = $("email").value.trim();
+  const navn = $("navn").value.trim(), virksomhed = $("virksomhed").value.trim(), email = "";
   if (!valgt) { $("error").textContent = "Vælg et formål ved at trykke på et af kortene."; return; }
   if (!navn || !virksomhed) { $("error").textContent = "Skriv dit navn og din virksomhed."; return; }
-  if (email && !/^\S+@\S+\.\S+$/.test(email)) { $("error").textContent = "Tjek din e-mail, eller lad feltet stå tomt."; return; }
   if ($("website").value) return; // spam-fælde
 
   const btn = $("send");
