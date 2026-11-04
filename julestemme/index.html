@@ -162,7 +162,7 @@
     <h2>Sådan foregår det</h2>
     <p class="lead">Det tager under ét minut at være med.</p>
     <div class="steps">
-      <div class="step"><div class="n">1</div><h3>Medarbejderne foreslog</h3><p>Alle i Racoon har foreslået et godt formål, der betyder noget for dem. Ud fra deres forslag har vi valgt 8 finalister.</p></div>
+      <div class="step"><div class="n">1</div><h3>Medarbejderne foreslog</h3><p>Alle i Racoon har foreslået et godt formål, der betyder noget for dem. Ud fra deres forslag har vi valgt 7 finalister.</p></div>
       <div class="step"><div class="n">2</div><h3>I stemmer</h3><p>Vælg det formål, du synes skal have pengene, og skriv dit navn og din virksomhed. I må gerne stemme flere fra samme virksomhed.</p></div>
       <div class="step"><div class="n">3</div><h3>Vi kører ud med checkene</h3><p>De 3 formål med flest stemmer får 50.000, 40.000 og 30.000 kr. Vi afleverer pengene i starten af december.</p></div>
     </div>
@@ -171,7 +171,7 @@
 
 <section class="vote" id="stem">
   <div class="wrap">
-    <h2>De 8 finalister</h2>
+    <h2>De 7 finalister</h2>
     <p class="lead">Foreslået af Racoons medarbejdere. Tryk på det formål, du vil stemme på.</p>
 
     <div id="vote-area">
@@ -224,18 +224,17 @@
 
 <script>
 /* =========================================================
-   RET HER: De 8 finalister
+   RET HER: De 7 finalister
    Skift navn, tekst og medarbejdercitat, når I har valgt dem.
    ========================================================= */
 const finalister = [
   { navn: "Børnecancerfonden", tekst: "Støtter børn med kræft og deres familier og giver penge til forskning i børnekræft.", citat: "Fordi et barneliv ikke skal være forgæves.", af: "Michael Lind" },
   { navn: "Dyreværnet", tekst: "Driver blandt andet internatet i Rødovre og hjælper hjemløse og forsømte dyr til et nyt og trygt hjem.", citat: "Dyr har som regel ikke en stemme for sig selv. Dyreværnet hjælper dyr med omplacering og med at finde tryghed i mennesker igen.", af: "Jonatan Zyskind" },
-  { navn: "Dyrenes Beskyttelse", tekst: "Hjælper dyr i nød i hele landet og arbejder for bedre dyrevelfærd.", citat: "Dyr kan ikke passe på sig selv, så de har brug for vores kærlighed, omsorg og beskyttelse.", af: "Greta" },
-  { navn: "Julemærkefonden", tekst: "Driver Julemærkehjemmene, hvor børn i mistrivsel får et ophold, der styrker deres selvværd og trivsel.", citat: "Børns trivsel ligger mig meget på sinde. Jeg har haft klassekammerater, der var afsted, og de kom hjem som forandrede mennesker.", af: "Rasmus Stripp" },
-  { navn: "Kræftens Bekæmpelse", tekst: "Forsker i kræft, arbejder med forebyggelse og støtter kræftpatienter og pårørende.", citat: "Det betyder meget for mig, fordi min bedstemor døde af kræft sidste år.", af: "Steffany" },
   { navn: "headspace", tekst: "Giver gratis og anonym rådgivning til unge, der har brug for nogen at tale med.", citat: "Alle fortjener at blive hørt, forstået og støttet. Nogle gange kan det at lytte gøre en verden til forskel.", af: "Hattie" },
-  { navn: "Hjerteforeningen", tekst: "Bekæmper hjertesygdomme og arbejder for flere hjertestartere og flere, der kan give førstehjælp.", citat: "Som hjerteløber har jeg oplevet, hvordan en hjertestarter tæt på kan gøre forskellen på liv og død. Derfor skal der flere hjertestartere ud i Danmark.", af: "Oscar" },
-  { navn: "Broen Danmark", tekst: "Hjælper udsatte børn ind i foreningslivet ved at betale kontingent og udstyr til fx sport og spejder.", citat: "Jeg ved fra egen erfaring, hvor vigtige foreninger er for børn, og hvor meget det betyder at være med i et fællesskab.", af: "Kristtina" }
+  { navn: "Mercy Ships Danmark", tekst: "Sejler med hospitalsskibe, hvor frivilligt sundhedspersonale giver gratis operationer til mennesker i Afrika.", citat: "Sundhedspersonale fra hele verden betaler selv for at være med på det gamle danske skib Dronning Ingrid og helbrede syge børn og voksne i Afrika. Meget større kan det ikke være.", af: "Michael Lind" },
+  { navn: "Alzheimerforeningen", tekst: "Støtter mennesker med demens og deres pårørende med rådgivning og fællesskab og arbejder for mere viden om sygdommen.", citat: "Fordi det er en pårørendesygdom.", af: "Andreas" },
+  { navn: "Hjælp din næste", tekst: "Hjælper hjemløse og socialt udsatte i Danmark.", citat: "At vores udsatte i Danmark får hjælp.", af: "Janne Bentsen" },
+  { navn: "Børns Vilkår", tekst: "Står bag BørneTelefonen og hjælper børn, der har det svært, med rådgivning og støtte.", citat: "", af: "" }
 ];
 
 /* =========================================================
@@ -265,8 +264,12 @@ finalister.forEach((f, i) => {
     <blockquote><span class="q"></span><cite></cite></blockquote>`;
   el.querySelector("h3").textContent = f.navn;
   el.querySelector("p").textContent = f.tekst;
-  el.querySelector(".q").textContent = "“" + f.citat + "”";
-  el.querySelector("cite").textContent = f.af;
+  if (f.citat) {
+    el.querySelector(".q").textContent = "“" + f.citat + "”";
+    el.querySelector("cite").textContent = f.af;
+  } else {
+    el.querySelector("blockquote").remove();
+  }
   el.addEventListener("click", () => {
     valgt = f.navn;
     grid.querySelectorAll(".card").forEach(c => c.classList.toggle("picked", c === el));
