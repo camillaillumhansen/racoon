@@ -31,7 +31,8 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 #cfill{height:100%;background:var(--g);transition:width 1s linear}
 
 /* PAGE: 3 rækker */
-.page{height:calc(100vh - 48px);display:grid;grid-template-rows:36% 41% 23%;padding:8px 16px 8px;gap:8px}
+.page{height:calc(100vh - 48px);display:grid;grid-template-rows:36fr 40fr 24fr;padding:8px 16px 22px;gap:8px;overflow:hidden}
+.page>*{min-height:0}
 
 /* ROW 1: Donut til venstre + 5 KPI-kort til højre i 2 rækker */
 .r1{display:grid;grid-template-columns:200px 1fr;gap:8px;min-height:0}
@@ -92,8 +93,9 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 .sv.g{color:var(--g)}.sv.o{color:var(--gold)}.sv.b{color:#818cf8}
 
 /* ROW 3: Fremgang + Succes + Hund */
-.r3{display:grid;grid-template-columns:1.2fr 1fr 0.55fr;gap:8px;min-height:0}
-.gc{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+.r3{display:grid;grid-template-columns:1.2fr 1fr 0.6fr;gap:8px;min-height:0}
+.r3>*{min-height:0}
+.gc{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;gap:5px;position:relative;overflow:hidden}
 .gc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--b),var(--g));border-radius:14px 14px 0 0}
 .gh{display:flex;justify-content:space-between;align-items:center}
 .gl{font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--s)}
@@ -102,10 +104,10 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 .big-prog-lbl{display:flex;justify-content:space-between}
 .big-prog-name{font-size:.75rem;font-weight:700;color:var(--w)}
 .big-prog-val{font-size:.75rem;font-weight:700;color:var(--s)}
-.big-prog-track{height:11px;background:var(--bdr2);border-radius:6px;overflow:hidden}
+.big-prog-track{height:9px;background:var(--bdr2);border-radius:6px;overflow:hidden}
 .big-prog-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--g),#34d399);transition:width 1.2s ease}
-.gbars{display:flex;flex-direction:column;gap:7px;flex:1;justify-content:center}
-.gbr{display:flex;flex-direction:column;gap:3px}
+.gbars{display:flex;flex-direction:column;gap:2px;flex:1;justify-content:space-evenly;min-height:0}
+.gbr{display:flex;flex-direction:column;gap:2px}
 .gbh{display:flex;justify-content:space-between}
 .gbn{font-size:.72rem;font-weight:700;color:var(--w)}
 .gbv{font-size:.72rem;font-weight:700;color:var(--s)}
@@ -122,11 +124,13 @@ header{display:flex;justify-content:space-between;align-items:center;padding:0 2
 .sname{font-size:1.4rem;font-weight:900;color:var(--gold);line-height:1}
 .sprize{font-size:.65rem;font-weight:700;color:var(--s);margin-top:3px;margin-bottom:6px}
 .bbl{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px 10px 10px 3px;padding:8px 10px;font-size:.75rem;font-weight:600;color:var(--w);line-height:1.5}
-.dog{background:var(--card);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
+.dog{background:var(--card);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:10px 10px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;position:relative;overflow:hidden}
 .dog::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#fbbf24);border-radius:14px 14px 0 0}
 .deb{font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#f59e0b}
 .dem{font-size:3rem;line-height:1}
-.dn{font-size:1.9rem;font-weight:900;color:var(--w)}
+.dimg{height:min(64px,40%);aspect-ratio:1;border-radius:50%;object-fit:cover;border:2px solid #f59e0b;flex-shrink:0}
+.dn{font-size:clamp(.85rem,1.1vw,1.15rem);font-weight:900;color:var(--w);line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dt{font-size:.66rem;color:var(--s);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 #err{display:none;position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:100;background:rgba(239,68,68,.15);border:1px solid var(--r);color:var(--r);padding:6px 14px;border-radius:8px;font-size:.75rem}
 
 /* ── VELKOMMEN-TILSTAND ── */
@@ -332,10 +336,9 @@ function renderR3(kpis){
   const ht=kvs(kpis,'Hund Tekst');
   const hundHtml=`<div class="dog">
     <div class="deb">Månedens hund 🐾</div>
-    <img src="hund.jpg?v=${Date.now()}" onerror="this.src='${AVATARS.shivas||FALLBACK}'" alt="${hn}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid #f59e0b;margin:4px 0"/>
+    <img src="hund.jpg?v=${Date.now()}" onerror="this.src='${AVATARS.shivas||FALLBACK}'" alt="${hn}" class="dimg"/>
     <div class="dn">${hn}</div>
-    ${ht!=='–'?`<div style="font-size:.68rem;color:var(--s);text-align:center;line-height:1.4;margin-top:2px">${ht}</div>`:''}
-  </div>
+    ${ht!=='–'?`<div class="dt">${ht}</div>`:''}
   </div>`;
   document.getElementById('r3').innerHTML=goalHtml+succesHtml+hundHtml;
 }
