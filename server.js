@@ -55,7 +55,7 @@ app.get('/api/kpi', async (req, res) => {
 // VELKOMST-SKÆRM (helt adskilt fra dashboardet)
 // ─────────────────────────────────────────────
 const WELCOME_PIN = process.env.WELCOME_PIN || 'racoon';
-const TAK_MINUTTER = 30;
+const TAK_MINUTTER = 180;
 
 let welcome = {
   mode: 'off',          // 'off' | 'velkommen' | 'tak'
